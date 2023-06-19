@@ -8,11 +8,13 @@
     <title>Laravel</title>
 
     <!-- Fonts -->
+    <link rel="stylesheet" href="https://cdn.linearicons.com/free/1.0.0/icon-font.min.css">
     <link rel="preconnect" href="https://fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=figtree:400,600&display=swap" rel="stylesheet" />
     <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
     <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
     <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+    
     <!-- Styles -->
     <style>
         body {
@@ -69,6 +71,10 @@
             -webkit-transition: all 0.1s linear;
             -moz-transition: all 0.1s linear;
             transition: all 0.1s linear;
+        }
+
+        .lnr-eye {
+            cursor: pointer;
         }
 
         .panel-login input:hover,
@@ -181,13 +187,16 @@
                                 @endif
 
 
-                                <form id="login-form" action="{{ route('login.submit') }}" method="post" role="form" style="display: block;">
+                                <form id="login-form" action="{{ route('login') }}" method="post" role="form" style="display: block;">
                                     @csrf
                                     <div class="form-group">
                                         <input type="text" name="username" id="username" tabindex="1" class="form-control" placeholder="Nome de Usuário" value="">
                                     </div>
                                     <div class="form-group">
                                         <input type="password" name="password" id="password" tabindex="2" class="form-control" placeholder="Senha">
+
+                                        <span class="lnr lnr-eye"></span>
+
                                     </div>
                                     <div class="form-group text-center">
                                         <input type="checkbox" tabindex="3" class="" name="remember" id="remember">
@@ -211,11 +220,14 @@
                                         <input type="text" name="username" id="username" tabindex="1" class="form-control" placeholder="Nome de Usuário" value="">
                                     </div>
                                     <div class="form-group">
-                                        <input type="password" name="password" id="password" tabindex="2" class="form-control" placeholder="Senha">
+                                        <input type="password" name="password" id="r-password" tabindex="2" class="form-control" placeholder="Senha">
                                     </div>
                                     <div class="form-group">
                                         <input type="password" name="password_confirmation" id="confirm-password" tabindex="2" class="form-control" placeholder="Confirme a Senha">
                                     </div>
+
+                                    
+
                                     <div class="form-group">
                                         <div class="row">
                                             <div class="col-sm-6 col-sm-offset-3">
@@ -232,5 +244,19 @@
         </div>
     </div>
 </body>
+
+<script>
+    let btn = document.querySelector('.lnr-eye');
+    btn.addEventListener('click', function() {
+        let input = document.querySelector('#password');
+        console.log(input);
+        if (input.getAttribute('type') == 'password') {
+            input.setAttribute('type', 'text');
+        } else {
+            input.setAttribute('type', 'password');
+        }
+
+        });
+</script>
 
 </html>
