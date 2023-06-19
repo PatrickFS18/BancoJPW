@@ -61,7 +61,7 @@ CREATE TABLE `clientes` (
   `Nome` varchar(255) DEFAULT NULL,
   `Username` varchar(255) DEFAULT NULL,
   `Senha` varchar(255) DEFAULT NULL,
-  `NumeroConta` varchar(255) DEFAULT NULL,
+  `Numero_Conta` varchar(255) DEFAULT NULL,
   `Saldo` decimal(10,2) DEFAULT NULL,
   `Limite` decimal(10,2) DEFAULT NULL,
   `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
@@ -147,13 +147,12 @@ ALTER TABLE `transacoes`
 --
 -- Restrições para despejos de tabelas
 --
-
 --
 -- Limitadores para a tabela `acessos`
+
 --
 ALTER TABLE `acessos`
   ADD CONSTRAINT `acessos_ibfk_1` FOREIGN KEY (`cliente_id`) REFERENCES `clientes` (`id`) ON DELETE CASCADE;
-
 --
 -- Limitadores para a tabela `chaves_pix`
 --
