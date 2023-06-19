@@ -181,7 +181,7 @@
                                 @endif
 
 
-                                <form id="login-form" action="{{ route('login') }}" method="post" role="form" style="display: block;">
+                                <form id="login-form" action="{{ route('login.submit') }}" method="post" role="form" style="display: block;">
                                     @csrf
                                     <div class="form-group">
                                         <input type="text" name="username" id="username" tabindex="1" class="form-control" placeholder="Nome de Usuário" value="">

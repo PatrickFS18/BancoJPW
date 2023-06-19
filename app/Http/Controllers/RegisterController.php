@@ -28,7 +28,7 @@ class RegisterController extends Controller
         $cliente->limite = 1000;
         $cliente->save();
 
-        return redirect()->route('/login')->with('success', 'Registro realizado com sucesso! Faça login para continuar.');
+        return back()->with('success', 'Registro realizado com sucesso! Faça login para continuar.');
     }
 
 
