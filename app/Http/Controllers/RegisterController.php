@@ -25,6 +25,6 @@ class RegisterController extends Controller
         $user->save();
 
         // Redirecionar o usuário para a página de login ou qualquer outra ação desejada
-        return redirect()->route('login')->with('success', 'Registro realizado com sucesso! Faça login para continuar.');
+        return redirect()->route('/')->with('success', 'Registro realizado com sucesso! Faça login para continuar.');
 }
 }
