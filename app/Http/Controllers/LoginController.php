@@ -19,13 +19,15 @@ class LoginController extends Controller
             'username' => 'required|string',
             'password' => 'required|string',
         ]);
-        $request['password']=bcrypt($request->password);
-
+        
+        
         // Buscar o usuário com base no nome de usuário fornecido
+        
         $user = Cliente::where('username', $request->username)->first();
+
         // Verificar se o usuário existe e se a senha está correta
         if ($user) {
-            if (password_verify($request->password, $user->senha)) {
+            if (Hash::check($request->password, $user->senha)) {
                 // Autenticação bem-sucedida
                 Auth::login($user); // Fazer login do usuário
                 return redirect()->route('home');

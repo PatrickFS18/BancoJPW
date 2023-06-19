@@ -220,7 +220,7 @@
                                         <input type="text" name="username" id="username" tabindex="1" class="form-control" placeholder="Nome de Usuário" value="">
                                     </div>
                                     <div class="form-group">
-                                        <input type="password" name="password" id="r-password" tabindex="2" class="form-control" placeholder="Senha">
+                                        <input type="password" name="password" id="password" tabindex="2" class="form-control" placeholder="Senha">
                                     </div>
                                     <div class="form-group">
                                         <input type="password" name="password_confirmation" id="confirm-password" tabindex="2" class="form-control" placeholder="Confirme a Senha">

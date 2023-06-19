@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Cliente;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 
 class RegisterController extends Controller
 {
@@ -22,7 +23,7 @@ class RegisterController extends Controller
         $cliente = new Cliente();
         $cliente->nome = $request->nome;
         $cliente->username = $request->username;
-        $cliente->senha = bcrypt($request->password);
+        $cliente->senha =  Hash::make($request->newPassword);
         $cliente->numero_Conta = $this->gerarNumeroContaAleatorio(); // Função para gerar o número de conta aleatório
         $cliente->saldo = 150;
         $cliente->limite = 1000;
