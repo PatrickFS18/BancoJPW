@@ -162,12 +162,25 @@
                     </div>
                     <div class="panel-body">
                         <div class="row">
+
+
                             <div class="col-lg-12">
                                 @if (session('success'))
                                 <div class="alert alert-success">
                                     {{ session('success') }}
                                 </div>
                                 @endif
+                                @if ($errors->any())
+                                <div class="alert alert-danger">
+                                    <ul>
+                                        @foreach ($errors->all() as $error)
+                                        <li>{{ $error }}</li>
+                                        @endforeach
+                                    </ul>
+                                </div>
+                                @endif
+
+
                                 <form id="login-form" action="{{ route('login') }}" method="post" role="form" style="display: block;">
                                     @csrf
                                     <div class="form-group">
@@ -199,6 +212,9 @@
                                     </div>
                                     <div class="form-group">
                                         <input type="password" name="password" id="password" tabindex="2" class="form-control" placeholder="Senha">
+                                    </div>
+                                    <div class="form-group">
+                                        <input type="password" name="password_confirmation" id="confirm-password" tabindex="2" class="form-control" placeholder="Confirme a Senha">
                                     </div>
                                     <div class="form-group">
                                         <div class="row">

@@ -11,24 +11,26 @@ class RegisterController extends Controller
 
     public function register(Request $request)
     {
-    
+
         $request->validate([
             'nome' => 'required|string',
             'username' => 'required|string|unique:clientes',
+            'password_confirmation' => 'required|string',
             'password' => 'required|string|min:6|confirmed',
         ]);
 
         $cliente = new Cliente();
-        $cliente->Nome = $request->nome;
-        $cliente->Username = $request->username;
-        $cliente->Senha = hash('sha256', $request->password);
+        $cliente->nome = $request->nome;
+        $cliente->username = $request->username;
+        $cliente->senha = hash('sha256', $request->password);
         $cliente->numero_Conta = $this->gerarNumeroContaAleatorio(); // Função para gerar o número de conta aleatório
         $cliente->saldo = 150;
         $cliente->limite = 1000;
         $cliente->save();
 
-        return redirect()->route('login')->with('success', 'Registro realizado com sucesso! Faça login para continuar.');
+        return redirect()->route('/login')->with('success', 'Registro realizado com sucesso! Faça login para continuar.');
     }
+
 
     private function gerarNumeroContaAleatorio()
     {
