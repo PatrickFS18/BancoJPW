@@ -12,12 +12,12 @@ class Cliente extends Model
     protected $table = 'clientes';
 
     protected $fillable = [
-        'Nome',
-        'Username',
-        'Senha',
-        'Numero_Conta',
-        'Saldo',
-        'Limite',
+        'nome',
+        'username',
+        'senha',
+        'numero_Conta',
+        'saldo',
+        'limite',
     ];
 
     public function transacoes()

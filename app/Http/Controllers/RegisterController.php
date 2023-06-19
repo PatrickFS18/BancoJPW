@@ -2,29 +2,51 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\User;
+use App\Models\Cliente;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class RegisterController extends Controller
 {
+
     public function register(Request $request)
     {
-        
-        // Validação dos dados do formulário de registro
+    
         $request->validate([
             'nome' => 'required|string',
-            'username' => 'required|string|unique:users',
+            'username' => 'required|string|unique:clientes',
             'password' => 'required|string|min:6|confirmed',
         ]);
 
-        // Criar um novo usuário
-        $user = new User();
-        $user->nome = $request->nome;
-        $user->username = $request->username;
-        $user->password = hash('sha256', $request->password); // Usando a função hash para gerar o hash da senha
-        $user->save();
+        $cliente = new Cliente();
+        $cliente->Nome = $request->nome;
+        $cliente->Username = $request->username;
+        $cliente->Senha = hash('sha256', $request->password);
+        $cliente->numero_Conta = $this->gerarNumeroContaAleatorio(); // Função para gerar o número de conta aleatório
+        $cliente->saldo = 150;
+        $cliente->limite = 1000;
+        $cliente->save();
 
-        // Redirecionar o usuário para a página de login ou qualquer outra ação desejada
-        return redirect()->route('/')->with('success', 'Registro realizado com sucesso! Faça login para continuar.');
-}
+        return redirect()->route('login')->with('success', 'Registro realizado com sucesso! Faça login para continuar.');
+    }
+
+    private function gerarNumeroContaAleatorio()
+    {
+        $numeroConta = '';
+
+        // Gerar um número de conta aleatório de 8 dígitos
+        for ($i = 0; $i < 8; $i++) {
+            $numeroConta .= rand(0, 9);
+        }
+
+        // Verificar se o número de conta já existe na tabela
+        $existente = DB::table('clientes')->where('numero_Conta', $numeroConta)->exists();
+
+        // Se o número de conta já existir, gerar um novo número
+        if ($existente) {
+            return $this->gerarNumeroContaAleatorio();
+        }
+
+        return $numeroConta;
+    }
 }

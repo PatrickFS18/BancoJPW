@@ -99,7 +99,7 @@
             border-color: #53A3CD;
         }
 
-        
+
         .btn-register {
             background-color: #1CB94E;
             outline: none;
@@ -121,26 +121,24 @@
     </style>
 
     <script>
-$(function() {
+        $(function() {
 
-$('#login-form-link').click(function(e) {
-    $("#login-form").delay(100).fadeIn(100);
-     $("#register-form").fadeOut(100);
-    $('#register-form-link').removeClass('active');
-    $(this).addClass('active');
-    e.preventDefault();
-});
-$('#register-form-link').click(function(e) {
-    $("#register-form").delay(100).fadeIn(100);
-     $("#login-form").fadeOut(100);
-    $('#login-form-link').removeClass('active');
-    $(this).addClass('active');
-    e.preventDefault();
-});
+            $('#login-form-link').click(function(e) {
+                $("#login-form").delay(100).fadeIn(100);
+                $("#register-form").fadeOut(100);
+                $('#register-form-link').removeClass('active');
+                $(this).addClass('active');
+                e.preventDefault();
+            });
+            $('#register-form-link').click(function(e) {
+                $("#register-form").delay(100).fadeIn(100);
+                $("#login-form").fadeOut(100);
+                $('#login-form-link').removeClass('active');
+                $(this).addClass('active');
+                e.preventDefault();
+            });
 
-});
-
-
+        });
     </script>
 
 
@@ -165,6 +163,11 @@ $('#register-form-link').click(function(e) {
                     <div class="panel-body">
                         <div class="row">
                             <div class="col-lg-12">
+                                @if (session('success'))
+                                <div class="alert alert-success">
+                                    {{ session('success') }}
+                                </div>
+                                @endif
                                 <form id="login-form" action="{{ route('login') }}" method="post" role="form" style="display: block;">
                                     @csrf
                                     <div class="form-group">
@@ -184,7 +187,7 @@ $('#register-form-link').click(function(e) {
                                             </div>
                                         </div>
                                     </div>
-                                    
+
                                 </form>
                                 <form id="register-form" action="{{ route('register') }}" method="post" role="form" style="display: none;">
                                     @csrf
@@ -192,13 +195,10 @@ $('#register-form-link').click(function(e) {
                                         <input type="text" name="nome" id="username" tabindex="1" class="form-control" placeholder="Nome Completo" value="">
                                     </div>
                                     <div class="form-group">
-                                    <input type="text" name="username" id="username" tabindex="1" class="form-control" placeholder="Nome de Usuário" value="">
+                                        <input type="text" name="username" id="username" tabindex="1" class="form-control" placeholder="Nome de Usuário" value="">
                                     </div>
                                     <div class="form-group">
                                         <input type="password" name="password" id="password" tabindex="2" class="form-control" placeholder="Senha">
-                                    </div>
-                                    <div class="form-group">
-                                        <input type="password" name="confirm-password" id="confirm-password" tabindex="2" class="form-control" placeholder="Confirme Senha">
                                     </div>
                                     <div class="form-group">
                                         <div class="row">

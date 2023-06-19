@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Tempo de geração: 13-Jun-2023 às 00:22
+-- Tempo de geração: 19-Jun-2023 às 16:21
 -- Versão do servidor: 10.4.27-MariaDB
 -- versão do PHP: 8.0.25
 
@@ -58,12 +58,12 @@ CREATE TABLE `chaves_pix` (
 
 CREATE TABLE `clientes` (
   `id` int(11) NOT NULL,
-  `Nome` varchar(255) DEFAULT NULL,
-  `Username` varchar(255) DEFAULT NULL,
-  `Senha` varchar(255) DEFAULT NULL,
-  `Numero_Conta` varchar(255) DEFAULT NULL,
-  `Saldo` decimal(10,2) DEFAULT NULL,
-  `Limite` decimal(10,2) DEFAULT NULL,
+  `nome` varchar(255) DEFAULT NULL,
+  `username` varchar(255) DEFAULT NULL,
+  `senha` varchar(255) DEFAULT NULL,
+  `numero_Conta` varchar(255) DEFAULT NULL,
+  `saldo` decimal(10,2) DEFAULT NULL,
+  `limite` decimal(10,2) DEFAULT NULL,
   `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
   `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
@@ -147,12 +147,13 @@ ALTER TABLE `transacoes`
 --
 -- Restrições para despejos de tabelas
 --
+
 --
 -- Limitadores para a tabela `acessos`
-
 --
 ALTER TABLE `acessos`
   ADD CONSTRAINT `acessos_ibfk_1` FOREIGN KEY (`cliente_id`) REFERENCES `clientes` (`id`) ON DELETE CASCADE;
+
 --
 -- Limitadores para a tabela `chaves_pix`
 --

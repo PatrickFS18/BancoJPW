@@ -15,12 +15,12 @@ class CreateClientesTable extends Migration
     {
         Schema::create('clientes', function (Blueprint $table) {
             $table->id();
-            $table->string('Nome')->nullable();
-            $table->string('Username')->nullable();
-            $table->string('Senha')->nullable();
-            $table->string('Numero_Conta')->nullable();
-            $table->decimal('Saldo', 10, 2)->nullable();
-            $table->decimal('Limite', 10, 2)->nullable();
+            $table->string('nome')->nullable();
+            $table->string('username')->nullable();
+            $table->string('senha')->nullable();
+            $table->string('numero_Conta')->nullable();
+            $table->decimal('saldo', 10, 2)->nullable();
+            $table->decimal('limite', 10, 2)->nullable();
             $table->timestamps();
         });
     }
