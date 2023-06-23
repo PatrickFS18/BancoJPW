@@ -9,8 +9,24 @@
 
 <body>
     <div class="header">
-        <div id="welcomeUser">Bem vindo <span id="spanName">user</span>
-        </div>
+    <div id="welcomeUser">
+    <p style="font-family: 'Times New Roman', Times, serif; font-size: larger">
+        @php
+        date_default_timezone_set('America/Sao_Paulo'); // Defina o fuso horário desejado
+
+
+            $hour = date('H');
+            if ($hour >= 6 && $hour < 12) {
+                echo 'Bom dia,';
+            } elseif ($hour >= 12 && $hour < 19) {
+                echo 'Boa tarde,';
+            } else {
+                echo 'Boa noite,';
+            }
+        @endphp
+        <span id="spanName">user!</span>
+    </p>
+</div>
         <div id="logo-jpw">
             <img src="/img/jpw.png" alt="" id="logo">
         </div>
@@ -29,13 +45,13 @@
         <div id="conteudoBanco">
             <div id="conteudoBancoBackground">
                 <h1 id="titleSaldo">Saldo Disponivel:</h1>
-                <h3 id="saldoInput">R$????</h3>
+                <h3 id="saldoInput">R$****</h3>
                 <button type="button" class="btn btn-link" id="toggleButton" onclick="toggleSaldoVisibility()"><i class="fa fa-eye" aria-hidden="true"></i></button>
                 <h5 id="limite">Seu limite é: <span id='valorLimite'> R$1000,00</span></h5>
             </div>
 
             <div id="divTransacao">
-                <button type="button" class="btn btn-light"><img src="/img/pix.png" id ='pixIcon'alt="">Pix</button>
+                <button type="button" class="btn btn-light"><img src="/img/pix.png" id ='pixIcon'alt="">pix</button>
                 <button type="button" class="btn btn-light"><img src="/img/pagar.png" id ='payIcon'alt="">Pagar</button>
                 <button type="button" class="btn btn-light" id="transferButton"><img src="/img/transferir.png" id ='transferIcon'alt=""><p id="transferButtonP">Transferir</p></button>
             </div>
@@ -53,13 +69,13 @@
             var saldoInput = document.getElementById("saldoInput");
             var toggleButton = document.getElementById("toggleButton");
 
-            if (saldoInput.textContent === "R$????") {
+            if (saldoInput.textContent === "R$****") {
                 saldoInput.textContent = "R$50,00";
                 //Patrick no lugar no 50,00 tu insere a variavel que irá receber o valor do saldo
                 toggleButton.classList.remove("hide-saldo");
                 toggleButton.classList.add("show-saldo");
             } else {
-                saldoInput.textContent = "R$????";
+                saldoInput.textContent = "R$****";
                 toggleButton.classList.remove("show-saldo");
                 toggleButton.classList.add("hide-saldo");
             }

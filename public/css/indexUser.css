@@ -1,10 +1,15 @@
-        body {
-            font-family: Arial, sans-serif;
+@font-face {
+    font-family:Bank ;
+    src: url(AntipastoPro-Medium_trial.ttf);
+}
+       body {
+            font-family:Bank,sans-serif;
             margin: 0;
             padding: 0;
-            background-size: cover;
+            background-size: 100%;
+            background-repeat: no-repeat;
             overflow-x: hidden;
-            background-image: url(/img/montain3.jpg)
+            background-image: url(/img/122.jpeg)
         }
         
         html,
@@ -71,7 +76,7 @@
         #extratoButton,
         #transferenciaButton,
         #pagamentoButton {
-            color: white;
+            color: rgb(255, 255, 255);
             border-color: rgb(10, 2, 51);
             ;
         }
@@ -106,7 +111,7 @@
             height: 3px;
             margin-left: 43%;
         }
-        
+       
         #titleSaldo {
             margin-left: 25%;
             font-size: 300%;
@@ -114,11 +119,11 @@
         }
         
         #saldoInput {
-            color: green;
-            margin-left: 40%;
-            margin-top: 5%;
-            font-family: 'Times New Roman', Times, serif;
-            font-size: 200%;
+            color: rgb(0, 255, 8);
+            margin-left: 37%;
+            margin-top: 4%;
+            font-family: serif;
+            font-size: 300%;
         }
         
         #limite {
@@ -140,8 +145,9 @@
             height: 400px;
             display: flex;
             flex-direction: column;
-            background-image: linear-gradient(to bottom, #030a7542, rgb(10, 2, 51));
+            background-image: linear-gradient(to bottom, #030b75, rgb(10, 2, 51));
             margin-left: -200px;
+            border-radius: 1em;
         }
         
         #divTransacao {
@@ -160,9 +166,9 @@
             margin-left: 10px;
             display: flex;
             flex-direction: column;
-            background-image: linear-gradient(to bottom, #ffffff, #1d1d1d);
+            background-image: linear-gradient(to bottom, #00bb00, #00ff40);
             font-size: 20px;
-            font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+            font-family:Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif
         }
         
         #pixIcon,
@@ -177,5 +183,5 @@
         }
         
         #transferButtonP {
-            margin-left: -20px;
+            margin-left: -19px;
         }
