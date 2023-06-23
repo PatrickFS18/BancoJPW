@@ -23,7 +23,8 @@ class RegisterController extends Controller
         $cliente = new Cliente();
         $cliente->nome = $request->nome;
         $cliente->username = $request->username;
-        $cliente->senha =  Hash::make($request->newPassword);
+    
+        $cliente->senha = Hash::make($request->password);
         $cliente->numero_Conta = $this->gerarNumeroContaAleatorio(); // Função para gerar o número de conta aleatório
         $cliente->saldo = 150;
         $cliente->limite = 1000;

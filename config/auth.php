@@ -15,7 +15,7 @@ return [
 
     'defaults' => [
         'guard' => 'web',
-        'passwords' => 'users',
+        'passwords' => 'clientes',
     ],
 
     /*
@@ -38,7 +38,7 @@ return [
     'guards' => [
         'web' => [
             'driver' => 'session',
-            'provider' => 'users',
+            'provider' => 'clientes',
         ],
     ],
 
@@ -60,16 +60,16 @@ return [
     */
 
     'providers' => [
-        'users' => [
+        'clientes' => [
             'driver' => 'eloquent',
-            'model' => App\Models\User::class,
+            'model' => App\Models\Cliente::class,
         ],
-
+    ],
         // 'users' => [
         //     'driver' => 'database',
-        //     'table' => 'users',
+        //     'table' => 'clientes',
         // ],
-    ],
+    
 
     /*
     |--------------------------------------------------------------------------
@@ -89,7 +89,7 @@ return [
     | quickly generating a very large amount of password reset tokens.
     |
     */
-
+/* redefinir senha
     'passwords' => [
         'users' => [
             'provider' => 'users',
@@ -98,7 +98,7 @@ return [
             'throttle' => 60,
         ],
     ],
-
+*/
     /*
     |--------------------------------------------------------------------------
     | Password Confirmation Timeout

@@ -1,13 +1,15 @@
 <?php
-
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
 use App\Models\Transacao;
-class Cliente extends Model
+use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Notifications\Notifiable;
+use Laravel\Sanctum\HasApiTokens;
+
+class Cliente extends Authenticatable
 {
-    use HasFactory;
+    use HasApiTokens, HasFactory, Notifiable;
 
     protected $table = 'clientes';
 
@@ -20,8 +22,20 @@ class Cliente extends Model
         'limite',
     ];
 
+    protected $hidden = [
+        'senha',
+       // 'remember_token', para lembrar senha de usuario
+    ];
+
+    protected $casts = [
+        'senha' => 'hashed',
+    ];
+
+    protected $password = 'senha';
+
     public function transacoes()
     {
         return $this->hasMany(Transacao::class, 'cliente_id');
     }
 }
+
