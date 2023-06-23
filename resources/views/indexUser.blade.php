@@ -76,7 +76,7 @@
         var toggleButton = document.getElementById("toggleButton");
 
         if (saldoInput.textContent === "R$****") {
-            saldoInput.textContent = "R$50,00";
+            saldoInput.textContent = 'R${{$saldo}}';
             toggleButton.classList.remove("btn btn-link hide-saldo");
             toggleButton.classList.add("btn btn-link show-saldo");
         } else {
