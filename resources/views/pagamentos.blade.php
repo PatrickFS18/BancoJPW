@@ -67,6 +67,11 @@
         {{ session('success') }}
     </div>
     @endif
+    @if(session('warning'))
+    <div class="alert alert-danger" style="background-color:aqua;">
+        {{ session('warning') }}
+    </div>
+    @endif
     <div id="banco">
         <div id="sidebar">
             <div id="buttons">
@@ -80,23 +85,7 @@
                 <br>
             </div>
         </div>
-        <!-- Exibir mensagem de sucesso -->
-        @if(session('success'))
-        <div class="alert alert-success">
-            {{ session('success') }}
-        </div>
-        @endif
 
-        <!-- Exibir mensagens de erro -->
-        @if($errors->any())
-        <div class="alert alert-danger">
-            <ul>
-                @foreach($errors->all() as $error)
-                <li>{{ $error }}</li>
-                @endforeach
-            </ul>
-        </div>
-        @endif
 
         <div id="pagamentos">
 
