@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\UserDashboardController;
+use App\Http\Controllers\PaymentsController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -21,6 +22,8 @@ Route::get('/transferencia', [UserDashboardController::class, 'transferencia'])-
 Route::get('/extrato', [UserDashboardController::class, 'extrato'])->name('extrato');
 
 Route::get('/home', [UserDashboardController::class, 'dashboard'])->name('home');
+
+Route::post('/inserir_chave', [PaymentsController::class, 'inserirChavePix'])->name('inserir_chave');
 
 Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 

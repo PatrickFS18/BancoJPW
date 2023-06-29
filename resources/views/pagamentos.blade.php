@@ -46,6 +46,23 @@
             <button type="submit" class="logout-button">Sair</button>
         </form>
     </div>
+    <!-- Exibição de mensagens de erro -->
+@if ($errors->any())
+    <div class="alert alert-danger">
+        <ul>
+            @foreach ($errors->all() as $error)
+                <li>{{ $error }}</li>
+            @endforeach
+        </ul>
+    </div>
+@endif
+
+<!-- Exibição de mensagem de sucesso -->
+@if(session('success'))
+    <div class="alert alert-success">
+        {{ session('success') }}
+    </div>
+@endif
     <div id="banco">
         <div id="sidebar">
             <div id="buttons">
@@ -60,6 +77,7 @@
             </div>
         </div>
         <div id="pagamentos">
+
             <h1 id="h1Pagamento">Pagamentos</h1>
             <div id="painelPagamentos">
                 <p>Seu saldo é: R$ @php echo $user['saldo']@endphp</p>
@@ -78,6 +96,17 @@
                 </form>
             </div>
             <button type="button" class="btn btn-success" id="payButton">Pagar</button>
+        </div>
+        <div id="Pix">
+            <form action="{{route('inserir_chave')}}" method="POST">
+                @csrf
+                <label for="chave-pix">Chave Pix:</label>
+                <!--Mudar para session-->
+                
+                <input type="hidden" value="{{$user->id}}" name="id"></input>
+                <input type="text" name="chave_pix" id="chave-pix">
+                <button type="submit">Inserir Chave Pix</button>
+            </form>
         </div>
     </div>
 
