@@ -81,12 +81,18 @@ class PaymentsController extends Controller
 
             // Calcular o valor a ser utilizado do limite
             $limiteUtilizado = $valorDoPagamento - $cliente->saldo;
+            $taxa = $limiteUtilizado * 0.01;
+
+            // Verificar se a taxa excede o limite disponível
+            if ($taxa > $cliente->limite) {
+                return redirect()->back()->with('error', 'Saldo insuficiente para cobrir a taxa de 1% sobre o limite utilizado.');
+            }
 
             // Atualizar o saldo do cliente
             $cliente->saldo = 0;
 
             // Atualizar o limite do cliente
-            $cliente->limite -= $limiteUtilizado;
+            $cliente->limite -= $limiteUtilizado + $taxa;
             $cliente->save();
 
             return redirect()->back()->with('warning', 'Você está utilizando parte do seu limite. Foi utilizado um valor de R$ ' . $limiteUtilizado . ' do seu limite de R$ ' . $cliente->limite . ' disponível.');
