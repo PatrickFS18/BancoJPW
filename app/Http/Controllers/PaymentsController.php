@@ -7,6 +7,10 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Transacao;
 use App\Models\Cliente;
+use Carbon\Carbon;
+
+
+
 
 class PaymentsController extends Controller
 {
@@ -53,7 +57,7 @@ class PaymentsController extends Controller
         }
     }
     public function pagamentoPix(request $request)
-    {        
+    {
 
         $metodoPagamento = $request->input('metodo');
         $chavePix = $request->input('chavePix');
@@ -97,13 +101,14 @@ class PaymentsController extends Controller
             // Atualizar o limite do cliente
             $cliente->limite -= $valorTaxado;
             $cliente->save();
+            $date = Carbon::now();
 
             $transacao = new Transacao();
             $transacao->cliente_id = $cliente->id;
             $transacao->descricao = $metodoPagamento;
             $transacao->tipo = $metodoPagamento;
             $transacao->valor = $valorDoPagamento;
-            $transacao->data = now();
+            $transacao->data = $date->format('Y-m-d H:i:s');
             $transacao->save();
 
             return redirect()->back()->with('warning', 'Você está utilizando parte do seu limite. Foi utilizado um valor de R$ ' . $limiteUtilizado . ' do seu limite de R$ ' . $cliente->limite . ' disponível.');
@@ -124,18 +129,21 @@ class PaymentsController extends Controller
         // Atualizar o saldo do cliente pagador
         $cliente->saldo -= $valorDoPagamento;
         $cliente->save();
+       $date = Carbon::now();
 
-        // Registrar a transação
-        $transacao = new Transacao();
-        $transacao->cliente_id = $cliente->id;
-        $transacao->descricao = 'Pagamento por: ' . $metodoPagamento;
-        $transacao->tipo = $metodoPagamento;
-        $transacao->valor = $valorDoPagamento;
-        $transacao->data = now();
+            $transacao = new Transacao();
+            $transacao->cliente_id = $cliente->id;
+            $transacao->descricao = $metodoPagamento;
+            $transacao->tipo = $metodoPagamento;
+            $transacao->valor = $valorDoPagamento;
+            $transacao->data = $date->format('Y-m-d H:i:s');
         $transacao->save();
 
         return redirect()->route('pagamentos')->with('success', 'Pagamento realizado com sucesso!');
     }
+
+
+
     public function transferir(request $request)
     {
         $metodoPagamento = "Transferência";
@@ -145,7 +153,6 @@ class PaymentsController extends Controller
         // Obter o cliente logado
         $clienteId = $request['id'];
         $cliente = Cliente::find($clienteId);
-
         // Verificar se o cliente existe
         if (!$cliente) {
             return redirect()->back()->with('error', 'Cliente não encontrado.');
@@ -158,6 +165,7 @@ class PaymentsController extends Controller
 
         // Verificar se o cliente possui saldo suficiente para realizar o pagamento
         if ($valorDoPagamento > $cliente->saldo) {
+
 
             // Verificar se o cliente pode usar o limite
             if ($cliente->limite <= 0 || $cliente->limite < ($valorDoPagamento - $cliente->saldo)) {
@@ -180,39 +188,37 @@ class PaymentsController extends Controller
             // Atualizar o limite do cliente
             $cliente->limite -= $valorTaxado;
             $cliente->save();
+            $date = Carbon::now();
 
             $transacao = new Transacao();
             $transacao->cliente_id = $cliente->id;
             $transacao->descricao = $metodoPagamento;
             $transacao->tipo = $metodoPagamento;
             $transacao->valor = $valorDoPagamento;
-            $transacao->data = now();
+            $transacao->data = $date->format('Y-m-d H:i:s');
             $transacao->save();
-
             return redirect()->back()->with('warning', 'Você está utilizando parte do seu limite. Foi utilizado um valor de R$ ' . $limiteUtilizado . ' do seu limite de R$ ' . $cliente->limite . ' disponível.');
         }
 
         // Verificar se o cliente possui uma conta bancária registrada para transferência
-        if (!$cliente->numero_conta) {
+        if (!$cliente->numero_Conta) {
             return redirect()->back()->with('error', 'Não foi possível encontrar uma conta bancária registrada.');
         }
 
-        // Verificar se o número da conta informado é válido
-        if ($numeroConta !== $cliente->numero_conta) {
-            return redirect()->back()->with('error', 'Número de conta inválido.');
-        }
+
 
         // Atualizar o saldo do cliente pagador
         $cliente->saldo -= $valorDoPagamento;
         $cliente->save();
+        $date = Carbon::now();
 
-        // Registrar a transação
+               // Registrar a transação
         $transacao = new Transacao();
         $transacao->cliente_id = $cliente->id;
         $transacao->descricao = 'Pagamento por: ' . $metodoPagamento;
         $transacao->tipo = $metodoPagamento;
         $transacao->valor = $valorDoPagamento;
-        $transacao->data = now();
+        $transacao->data = $date->format('Y-m-d H:i:s');
         $transacao->save();
 
         return redirect()->route('pagamentos')->with('success', 'Pagamento realizado com sucesso!');
