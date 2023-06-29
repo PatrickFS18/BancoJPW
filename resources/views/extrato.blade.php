@@ -60,39 +60,34 @@
                 <br>
             </div>
         </div>
+        
+
         <div id="extratoBancario">
             &nbsp;&nbsp; <h1 id="h1Extrato">Extrato Bancário</h1>
             <div id="painelExtrato">
-                <table class="table table-bordered" id="painelExtrato">
-                    <thead>
-                        <tr>
-                            <th scope="col">Data</th>
-                            <th scope="col">Valor</th>
-                            <th scope="col">Transação</th>
-                            <th scope="col">Método</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>01/05/2023</td>
-                            <td id='valorExtrato'>R$50,00</td>
-                            <td>Crédito</td>
-                            <td>Pix</td>
-                        </tr>
-                        <tr>
-                            <td>08/01/2024</td>
-                            <td id='valorExtrato'>R$90,00</td>
-                            <td>Crédito</td>
-                            <td>Boleto</td>
-                        </tr>
-                        <tr>
-                            <td>09/07/2026</td>
-                            <td id='valorExtrato'>R$182,50</td>
-                            <td>Débito</td>
-                            <td>Poupança</td>
-                        </tr>
-                    </tbody>
-                </table>
+            <table class="table table-bordered" id="painelExtrato">
+    <thead>
+        <tr>
+            <th scope="col">Data</th>
+            <th scope="col">Valor</th>
+            <th scope="col">Transação</th>
+            <th scope="col">Método</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        @foreach ($transacoes as $transacao)
+      
+        <tr>
+            <td>{{ $transacao['Data'] }}</td>
+            <td id="valorExtrato">R$ {{ $transacao->Valor }}</td>
+            <td>{{ $transacao->Descricao }}</td>
+            <td>{{ $transacao->Tipo }}</td>
+        </tr>
+        @endforeach
+    </tbody>
+</table>
+
                 <!--Puxar da Tabela HISTORICO, pegar o TR e jogar no php para inserir conforme for utilizado.-->
             </div>
         </div>
