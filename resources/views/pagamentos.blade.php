@@ -60,7 +60,6 @@
         </ul>
     </div>
     @endif
-
     <!-- Exibição de mensagem de sucesso -->
     @if(session('success'))
     <div class="alert alert-success">

@@ -46,14 +46,14 @@
             @csrf
             <button type="submit" class="logout-button">Sair</button>
         </form>
-        
+
     </div>
-         <!-- Exibição de mensagens de erro -->
-         @if ($errors->any())
+    <!-- Exibição de mensagens de erro -->
+    @if ($errors->any())
     <div class="alert alert-danger">
         <ul>
-            @foreach ($errors->all() as $error)
-            <li>{{ $error }}</li>
+            @foreach ($errors->all() as $err)
+            <li>{{ $err }}</li>
             @endforeach
         </ul>
     </div>
@@ -83,7 +83,7 @@
                 <br>
             </div>
         </div>
-    
+
         <div id="transferencias">
             <h1 id="h1Transferencia">Transferencia</h1>
             <div id="painelTransferencia">

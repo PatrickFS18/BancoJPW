@@ -56,13 +56,12 @@ class PaymentsController extends Controller
     {        
 
         $metodoPagamento = $request->input('metodo');
-        $chavePix = $request->input('numeroConta');
+        $chavePix = $request->input('chavePix');
         $valorDoPagamento = $request->input('valor');
 
         // Obter o cliente logado
         $clienteId = $request['id'];
         $cliente = Cliente::find($clienteId);
-
         // Verificar se o cliente existe
         if (!$cliente) {
             return redirect()->back()->with('error', 'Cliente não encontrado.');
