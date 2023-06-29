@@ -46,7 +46,30 @@
             @csrf
             <button type="submit" class="logout-button">Sair</button>
         </form>
+        
     </div>
+         <!-- Exibição de mensagens de erro -->
+         @if ($errors->any())
+    <div class="alert alert-danger">
+        <ul>
+            @foreach ($errors->all() as $error)
+            <li>{{ $error }}</li>
+            @endforeach
+        </ul>
+    </div>
+    @endif
+
+    <!-- Exibição de mensagem de sucesso -->
+    @if(session('success'))
+    <div class="alert alert-success">
+        {{ session('success') }}
+    </div>
+    @endif
+    @if(session('warning'))
+    <div class="alert alert-danger" style="background-color:aqua;">
+        {{ session('warning') }}
+    </div>
+    @endif
     <div id="banco">
         <div id="sidebar">
             <div id="buttons">
@@ -60,6 +83,7 @@
                 <br>
             </div>
         </div>
+    
         <div id="transferencias">
             <h1 id="h1Transferencia">Transferencia</h1>
             <div id="painelTransferencia">
