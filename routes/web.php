@@ -32,3 +32,5 @@ Route::post('/register', [RegisterController::class, 'register'])->name('registe
 Route::post('/login', [LoginController::class, 'login'])->name('login');
 
 Route::post('/pagamento-pix', [PaymentsController::class, 'pagamentoPix'])->name('pagamento-pix');
+
+Route::post('/transferir', [PaymentsController::class, 'transferir'])->name('transferir');

@@ -26,6 +26,7 @@
         background-color: #d32f2f;
     }
 </style>
+
 <body>
     <div class="header">
         <div id="welcomeUser">
@@ -63,11 +64,17 @@
             <h1 id="h1Transferencia">Transferencia</h1>
             <div id="painelTransferencia">
                 <p>Seu saldo é: R$ @php echo $user['saldo']@endphp</p>
-                <p>Chave:</p><input type="text" placeholder="Insira a chave da conta">
-                <p>Valor:</p><input type="text" placeholder="Valor da Transferência">
-                <p></p>
+                <form method="post" action="{{ route('transferir') }}">
+                    @csrf
+                    <!--Mudar para session-->
+
+                    <input type="hidden" value="{{$user->id}}" name="id"></input>
+                    <p>Chave:</p><input type="text" name="numeroConta" placeholder="Insira a chave da conta">
+                    <p>Valor:</p><input type="text" name="valor" placeholder="Valor da Transferência">
+                    <p></p>
             </div>
-            <button type="button" class="btn btn-success" id="payButton">Transferir</button>
+            <button type="submit" class="btn btn-success" id="payButton">Transferir</button>
+            </form>
         </div>
     </div>
 
