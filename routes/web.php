@@ -22,6 +22,8 @@ Route::get('/extrato', [UserDashboardController::class, 'extrato'])->name('extra
 
 Route::get('/home', [UserDashboardController::class, 'dashboard'])->name('home');
 
+Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
+
 Route::post('/register', [RegisterController::class, 'register'])->name('register');
 
 Route::post('/login', [LoginController::class, 'login'])->name('login');

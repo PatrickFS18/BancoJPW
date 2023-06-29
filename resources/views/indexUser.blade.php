@@ -7,6 +7,24 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
     <link rel="stylesheet" href="{{ asset('css/indexUser.css') }}">
 </head>
+<style>
+    .logout-button {
+        background-color: #f44336;
+        color: #ffffff;
+        border: none;
+        padding: 10px 20px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 16px;
+        cursor: pointer;
+        border-radius: 4px;
+    }
+
+    .logout-button:hover {
+        background-color: #d32f2f;
+    }
+</style>
 
 <body>
     <div class="header">
@@ -23,6 +41,11 @@
         <div id="logo-jpw">
             <img src="/img/jpw.png" alt="" id="logo">
         </div>
+        <form action="{{ route('logout') }}" method="POST">
+            @csrf
+            <button type="submit" class="logout-button">Sair</button>
+        </form>
+
     </div>
     <div id="banco">
         <div id="sidebar">

@@ -8,7 +8,24 @@
     <link rel="stylesheet" href="{{ asset('css/transferencias.css') }}">
 </head>
 
+<style>
+    .logout-button {
+        background-color: #f44336;
+        color: #ffffff;
+        border: none;
+        padding: 10px 20px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 16px;
+        cursor: pointer;
+        border-radius: 4px;
+    }
 
+    .logout-button:hover {
+        background-color: #d32f2f;
+    }
+</style>
 <body>
     <div class="header">
         <div id="welcomeUser">
@@ -24,6 +41,10 @@
         <div id="logo-jpw">
             <img src="/img/jpw.png" alt="" id="logo">
         </div>
+        <form action="{{ route('logout') }}" method="POST">
+            @csrf
+            <button type="submit" class="logout-button">Sair</button>
+        </form>
     </div>
     <div id="banco">
         <div id="sidebar">
@@ -41,7 +62,7 @@
         <div id="transferencias">
             <h1 id="h1Transferencia">Transferencia</h1>
             <div id="painelTransferencia">
-                <p>Seu saldo é: R$5000,00</p>
+                <p>Seu saldo é: R$ @php echo $user['saldo']@endphp</p>
                 <p>Chave:</p><input type="text" placeholder="Insira a chave da conta">
                 <p>Valor:</p><input type="text" placeholder="Valor da Transferência">
                 <p></p>

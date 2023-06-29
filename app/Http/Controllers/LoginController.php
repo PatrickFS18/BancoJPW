@@ -6,12 +6,15 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Cliente;
+use App\Models\acessos;
+
+use Carbon\Carbon;
 
 class LoginController extends Controller
 {
 
 
-   public function login(Request $request)
+    public function login(Request $request)
     {
         // Validação dos dados do formulário de login
         $request->validate([
@@ -23,11 +26,30 @@ class LoginController extends Controller
 
 
         if ($user && Hash::check($request->password, $user->senha)) {
+            //registro de acesso (login)
+            $acesso = new acessos();
+            $acesso->cliente_id = $user->id;
+            $acesso->data_login = Carbon::now();
+            $acesso->save();
+
             Auth::guard('clientes')->login($user);
             return redirect()->route('home');
         } else {
             return redirect()->route('login')->withErrors(['login' => 'Credenciais inválidas. Por favor, tente novamente.']);
         }
+    }
+    public function logout()
+    {
+        $user = Auth::guard('clientes')->user();
+
+        // Registrar o acesso de logout na tabela "acessos"
+        acessos::where('cliente_id', $user->id)
+        ->whereNull('data_logout')
+        ->update(['data_logout' => now()]);
+
+
+        Auth::guard('clientes')->logout();
+        return redirect()->route('login');
     }
 }
 /* // Buscar o usuário com base no nome de usuário fornecido

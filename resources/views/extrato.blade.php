@@ -8,6 +8,24 @@
     <link rel="stylesheet" href="{{ asset('css/extrato.css') }}">
 </head>
 
+<style>
+    .logout-button {
+        background-color: #f44336;
+        color: #ffffff;
+        border: none;
+        padding: 10px 20px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 16px;
+        cursor: pointer;
+        border-radius: 4px;
+    }
+
+    .logout-button:hover {
+        background-color: #d32f2f;
+    }
+</style>
 
 <body>
     <div class="header">
@@ -24,10 +42,14 @@
         <div id="logo-jpw">
             <img src="/img/jpw.png" alt="" id="logo">
         </div>
+        <form action="{{ route('logout') }}" method="POST">
+            @csrf
+            <button type="submit" class="logout-button">Sair</button>
+        </form>
     </div>
     <div id="banco">
         <div id="sidebar">
-        <div id="buttons">
+            <div id="buttons">
                 <a href="{{ route('home') }}" class="btn btn-outline-success" id="extratoButton">Home</a>
                 <br>
                 <a href="{{ route('extrato') }}" class="btn btn-outline-success" id="extratoButton">Extrato</a>

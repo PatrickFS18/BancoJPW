@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Cliente;
 
-class Acesso extends Model
+class acessos extends Model
 {
     use HasFactory;
 
