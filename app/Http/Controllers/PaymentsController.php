@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\ChavePix;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use App\Models\Transacao;
+use App\Models\Cliente;
 
 class PaymentsController extends Controller
 {
@@ -49,5 +51,72 @@ class PaymentsController extends Controller
             // Chave Pix inválida
             return redirect()->back()->withErrors(['chave_pix' => 'Chave Pix inválida. Por favor, insira um CPF, telefone ou e-mail válido.']);
         }
+    }
+    public function pagamentoPix(request $request)
+    {
+        $metodoPagamento = $request->input('metodo');
+        $chavePix = $request->input('chavePix');
+        $valorDoPagamento = $request->input('valor');
+
+        // Obter o cliente logado
+        $clienteId = $request['id'];
+        $cliente = Cliente::find($clienteId);
+
+        // Verificar se o cliente existe
+        if (!$cliente) {
+            return redirect()->back()->with('error', 'Cliente não encontrado.');
+        }
+
+        // Verificar se o valor do pagamento é válido
+        if ($valorDoPagamento <= 0) {
+            return redirect()->back()->with('error', 'Valor do pagamento inválido.');
+        }
+
+        // Verificar se o cliente possui saldo suficiente para realizar o pagamento
+        if ($valorDoPagamento > $cliente->saldo) {
+            // Verificar se o cliente pode usar o limite
+            if ($cliente->limite <= 0 || $cliente->limite < ($valorDoPagamento - $cliente->saldo)) {
+                return redirect()->back()->with('error', 'Saldo insuficiente para realizar o pagamento e não é possível utilizar o limite.');
+            }
+
+            // Calcular o valor a ser utilizado do limite
+            $limiteUtilizado = $valorDoPagamento - $cliente->saldo;
+
+            // Atualizar o saldo do cliente
+            $cliente->saldo = 0;
+
+            // Atualizar o limite do cliente
+            $cliente->limite -= $limiteUtilizado;
+            $cliente->save();
+
+            return redirect()->back()->with('warning', 'Você está utilizando parte do seu limite. Foi utilizado um valor de R$ ' . $limiteUtilizado . ' do seu limite de R$ ' . $cliente->limite . ' disponível.');
+        }
+
+        // Verificar se o cliente possui uma chave Pix registrada para receber o pagamento
+        $chavePixDestino = ChavePix::where('chave', $chavePix)->first();
+
+        if (!$chavePixDestino) {
+            return redirect()->back()->with('error', 'Não foi possível encontrar um destinatário com a chave Pix informada.');
+        }
+
+        // Atualizar o saldo do cliente destino
+        $clienteDestino = Cliente::find($chavePixDestino->cliente_id);
+        $clienteDestino->saldo += $valorDoPagamento;
+        $clienteDestino->save();
+
+        // Atualizar o saldo do cliente pagador
+        $cliente->saldo -= $valorDoPagamento;
+        $cliente->save();
+
+        // Registrar a transação
+        $transacao = new Transacao();
+        $transacao->cliente_id = $cliente->id;
+        $transacao->descricao = 'Pagamento por Pix';
+        $transacao->tipo = $metodoPagamento;
+        $transacao->valor = $valorDoPagamento;
+        $transacao->data = now();
+        $transacao->save();
+
+        return redirect()->route('pagamentos')->with('success', 'Pagamento realizado com sucesso!');
     }
 }

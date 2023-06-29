@@ -24,4 +24,5 @@ class Transacao extends Model
     {
         return $this->belongsTo(Cliente::class, 'cliente_id');
     }
+    public $timestamps = false;
 }

@@ -30,3 +30,5 @@ Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 Route::post('/register', [RegisterController::class, 'register'])->name('register');
 
 Route::post('/login', [LoginController::class, 'login'])->name('login');
+
+Route::post('/pagamento-pix', [PaymentsController::class, 'pagamentoPix'])->name('pagamento-pix');

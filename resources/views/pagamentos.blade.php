@@ -80,16 +80,37 @@
                 <br>
             </div>
         </div>
+        <!-- Exibir mensagem de sucesso -->
+        @if(session('success'))
+        <div class="alert alert-success">
+            {{ session('success') }}
+        </div>
+        @endif
+
+        <!-- Exibir mensagens de erro -->
+        @if($errors->any())
+        <div class="alert alert-danger">
+            <ul>
+                @foreach($errors->all() as $error)
+                <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+        @endif
+
         <div id="pagamentos">
 
             <h1 id="h1Pagamento">Pagamentos</h1>
             <div id="painelPagamentos">
                 <p>Seu saldo é: R$ @php echo $user['saldo']@endphp</p>
-                <p>Chave:</p><input type="text" placeholder="Insira a chave">
-                <p>Valor:</p><input type="text" placeholder="Valor do Pagamento">
-                <p></p>
-                <form action="" method="post">
+
+                <form action="{{ route('pagamento-pix') }}" method="post">
                     @csrf
+                    <!--Implementar session-->
+                    <input type="hidden" value="{{$user->id}}" name="id"></input>
+
+                    <p>Valor:</p><input type="text" name="valor" placeholder="Valor do Pagamento">
+
                     <p>Metodo de Pagamento:</p>
                     <select name="metodo">
                         <option value="pix">Pix</option>
@@ -97,10 +118,12 @@
                         <option value="transferencia">Débito</option>
                     </select>
                     <input type="text" name="chavePix" placeholder="Chave PIX" style="display: block;" id="chavePixInput">
-                </form>
             </div>
-            <button type="button" class="btn btn-success" id="payButton">Pagar</button>
+            <button type="submit" class="btn btn-success" id="payButton">Pagar</button>
         </div>
+        </form>
+
+
         <div id="Pix">
             <form action="{{route('inserir_chave')}}" method="POST">
                 @csrf

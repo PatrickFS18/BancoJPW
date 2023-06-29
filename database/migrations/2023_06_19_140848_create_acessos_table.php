@@ -19,7 +19,6 @@ class CreateAcessosTable extends Migration
             $table->foreign('cliente_id')->references('id')->on('clientes')->onDelete('cascade');
             $table->timestamp('data_login')->nullable();
             $table->timestamp('data_logout')->nullable();
-            $table->timestamps();
         });
     }
 
