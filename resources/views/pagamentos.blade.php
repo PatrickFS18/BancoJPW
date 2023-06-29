@@ -21,6 +21,10 @@
         border-radius: 4px;
     }
 
+    .hide {
+        display: none;
+    }
+
     .logout-button:hover {
         background-color: #d32f2f;
     }
@@ -47,22 +51,22 @@
         </form>
     </div>
     <!-- Exibição de mensagens de erro -->
-@if ($errors->any())
+    @if ($errors->any())
     <div class="alert alert-danger">
         <ul>
             @foreach ($errors->all() as $error)
-                <li>{{ $error }}</li>
+            <li>{{ $error }}</li>
             @endforeach
         </ul>
     </div>
-@endif
+    @endif
 
-<!-- Exibição de mensagem de sucesso -->
-@if(session('success'))
+    <!-- Exibição de mensagem de sucesso -->
+    @if(session('success'))
     <div class="alert alert-success">
         {{ session('success') }}
     </div>
-@endif
+    @endif
     <div id="banco">
         <div id="sidebar">
             <div id="buttons">
@@ -102,7 +106,7 @@
                 @csrf
                 <label for="chave-pix">Chave Pix:</label>
                 <!--Mudar para session-->
-                
+
                 <input type="hidden" value="{{$user->id}}" name="id"></input>
                 <input type="text" name="chave_pix" id="chave-pix">
                 <button type="submit">Inserir Chave Pix</button>
@@ -125,6 +129,11 @@
                 chavePixInput.style.display = 'none';
             }
         }
+    </script>
+    <script>
+        setTimeout(function() {
+            document.querySelector('.alert').classList.add('hide');
+        }, 4000);
     </script>
 </body>
 
