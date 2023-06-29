@@ -80,11 +80,10 @@
             </div>
 
             <div id="divTransacao">
-                <a class="btn btn-light" href="{{ route('pagamentos') }}"><img src="/img/pix.png" id='pixIcon' alt="">pix</a>
-                <a class="btn btn-light" href="{{ route('pagamentos') }}"><img src="/img/pagar.png" id='payIcon' alt="">Pagar</button>
-                    <a class="btn btn-light" href="{{ route('transferencia') }}" id="transferButton"><img src="/img/transferir.png" id='transferIcon' alt="">
-                        <p id="transferButtonP">Transferir</p>
-                    </a>
+                <a class="btn btn-light" href="{{ route('pagamentos') }}"  style="margin-left: 4em;"><img src="/img/pix.png" id='pixIcon' alt="">pix</a>
+                <a class="btn btn-light" href="{{ route('transferencia') }}" id="transferButton" style="margin-left: 4em;"><img src="/img/transferir.png" id='transferIcon' alt="">
+                    <p id="transferButtonP">Transferir</p>
+                </a>
 
             </div>
         </div>

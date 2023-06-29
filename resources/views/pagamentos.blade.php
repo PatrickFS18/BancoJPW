@@ -104,7 +104,7 @@
                     <select name="metodo">
                         <option value="pix">Pix</option>
                         <option value="boleto">Boleto</option>
-                        <option value="transferencia">Débito</option>
+                        <option value="Débito">Débito</option>
                     </select>
                     <input type="text" name="chavePix" placeholder="Chave PIX" style="display: block;" id="chavePixInput">
             </div>
