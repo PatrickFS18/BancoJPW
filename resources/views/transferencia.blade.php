@@ -3,10 +3,11 @@
 
 <head>
     <title>Meu Banco</title>
-    <meta charset="UTF-8">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
     <link rel="stylesheet" href="{{ asset('css/indexUser.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/transferencias.css') }}">
 </head>
+
 
 <body>
     <div class="header">
@@ -27,6 +28,8 @@
     <div id="banco">
         <div id="sidebar">
             <div id="buttons">
+                <a href="{{ route('home') }}" class="btn btn-outline-success" id="extratoButton">Home</a>
+                <br>
                 <a href="{{ route('extrato') }}" class="btn btn-outline-success" id="extratoButton">Extrato</a>
                 <br>
                 <a href="{{ route('transferencia') }}" class="btn btn-outline-success" id="transferenciaButton">Transferências</a>
@@ -35,37 +38,15 @@
                 <br>
             </div>
         </div>
-        <div id="conteudoBanco">
-            <div id="conteudoBancoBackground">
-                <h1 id="titleSaldo">Saldo Disponivel:</h1>
-
-                @php
-                $limite=$user['limite'];
-                $saldo=$user->saldo;
-                $saldoInput = "R$****"; // Defina o valor inicial do saldo
-                $toggleButtonClass = "hide-saldo"; // Defina a classe inicial do botão
-
-                if ($saldoInput === "R$****") {
-                $saldoInput = '{{$saldo}}'; // Substitua pelo valor da variável que receberá o valor do saldo
-                $toggleButtonClass = "show-saldo";
-                }
-                @endphp
-                <button type="button" class="btn btn-link {{ $toggleButtonClass }}" id="toggleButton" onclick="toggleSaldoVisibility()"><i class="fa fa-eye" aria-hidden="true"></i></button>
-                <h3 id="saldoInput">R$****</h3>
-
-                <h5 id="limite">Seu limite é: <span id='valorLimite'>R$ @php echo($limite); @endphp</span></h5>
+        <div id="transferencias">
+            <h1 id="h1Transferencia">Transferencia</h1>
+            <div id="painelTransferencia">
+                <p>Seu saldo é: R$5000,00</p>
+                <p>Chave:</p><input type="text" placeholder="Insira a chave da conta">
+                <p>Valor:</p><input type="text" placeholder="Valor da Transferência">
+                <p></p>
             </div>
-
-            <div id="divTransacao">
-                <a class="btn btn-light" href="{{ route('pagamentos') }}"><img src="/img/pix.png" id='pixIcon' alt="">pix</a>
-                <a class="btn btn-light" href="{{ route('pagamentos') }}"><img src="/img/pagar.png" id='payIcon' alt="">Pagar</button>
-                    <a class="btn btn-light" href="{{ route('transferencia') }}" id="transferButton"><img src="/img/transferir.png" id='transferIcon' alt="">
-                        <p id="transferButtonP">Transferir</p>
-                    </a>
-
-            </div>
-        </div>
-        <div>
+            <button type="button" class="btn btn-success" id="payButton">Transferir</button>
         </div>
     </div>
 
@@ -78,14 +59,15 @@
             var saldoInput = document.getElementById("saldoInput");
             var toggleButton = document.getElementById("toggleButton");
 
-            if (saldoInput.textContent === "R$****") {
-                saldoInput.textContent = 'R${{$saldo}}';
-                toggleButton.classList.remove("btn btn-link hide-saldo");
-                toggleButton.classList.add("btn btn-link show-saldo");
+            if (saldoInput.textContent === "R$????") {
+                saldoInput.textContent = "R$50,00";
+                //Patrick no lugar no 50,00 tu insere a variavel que irá receber o valor do saldo
+                toggleButton.classList.remove("hide-saldo");
+                toggleButton.classList.add("show-saldo");
             } else {
-                saldoInput.textContent = "R$****";
-                toggleButton.classList.remove("btn btn-link show-saldo");
-                toggleButton.classList.add("btn btn-link hide-saldo");
+                saldoInput.textContent = "R$????";
+                toggleButton.classList.remove("show-saldo");
+                toggleButton.classList.add("hide-saldo");
             }
         }
     </script>

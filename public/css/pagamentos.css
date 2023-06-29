@@ -1,0 +1,99 @@
+        body {
+            font-family: 'Times New Roman', Times, serif;
+            margin: 0;
+            padding: 0;
+            background-size: cover;
+            overflow-x: hidden;
+        }
+        
+        html,
+        body {
+            margin: 0;
+            padding: 0;
+        }
+        
+        .header {
+            background-color: rgb(10, 2, 51);
+            color: rgb(10, 253, 2);
+            padding: 0px 5px;
+            width: 99.5%;
+            height: 80px;
+            display: flex;
+            justify-content: center;
+            /* Centralizar horizontalmente */
+            align-items: center;
+            /* Centralizar verticalmente */
+            border-bottom: 2px solid rgb(1, 53, 1);
+        }
+        
+        #welcomeUser {
+            margin-top: 15px;
+            margin-left: 10px;
+            font-size: 20px;
+            color: white;
+        }
+        
+        #spanName {
+            color: rgb(10, 253, 2);
+        }
+        
+        #logo-jpw {
+            flex-grow: 1;
+            /* Faz o logotipo ocupar todo o espaço disponível */
+            display: flex;
+            margin-left: 38%;
+            margin-top: 10px;
+            /* Alinhar o logotipo ao extremo direito */
+        }
+        
+        #logo {
+            width: 120px;
+        }
+        
+        #sidebar {
+            background-color: rgb(10, 2, 51);
+            width: 180px;
+            height: 859px;
+        }
+        
+        #buttons {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            margin-left: 18%;
+        }
+        
+        #extratoButton {
+            margin-top: 5%;
+        }
+        
+        #extratoButton,
+        #transferenciaButton,
+        #pagamentoButton {
+            color: white;
+            border-color: rgb(10, 2, 51);
+            ;
+        }
+        
+        #h1Pagamento {
+            font-family: 'Times New Roman', Times, serif;
+        }
+        
+        #painelPagamentos {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto;
+            width: 100%;
+            border: 2px solid;
+            padding: 20px;
+            margin-left: 210%;
+            font-size: 20px;
+        }
+        
+        #payButton {
+            height: 50px;
+            margin-left: 250%;
+            margin-top: 5px;
+        }

@@ -34,7 +34,7 @@ class RegisterController extends Controller
     }
 
 
-    private function gerarNumeroContaAleatorio()
+private function gerarNumeroContaAleatorio()
     {
         $numeroConta = '';
 

@@ -31,8 +31,9 @@ class Cliente extends Authenticatable
         'senha' => 'hashed',
     ];
 
-    protected $password = 'senha';
 
+    protected $passwordName = 'senha';
+    
     public function transacoes()
     {
         return $this->hasMany(Transacao::class, 'cliente_id');

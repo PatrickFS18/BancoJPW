@@ -4,7 +4,7 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Authentication Defaults
+    | Default Authentication Guard
     |--------------------------------------------------------------------------
     |
     | This option controls the default authentication "guard" and password
@@ -31,12 +31,22 @@ return [
     | users are actually retrieved out of your database or other storage
     | mechanisms used by this application to persist your user's data.
     |
-    | Supported: "session"
+    | Supported: "session", "token"
     |
     */
 
     'guards' => [
         'web' => [
+            'driver' => 'session',
+            'provider' => 'clientes',
+        ],
+
+        'api' => [
+            'driver' => 'token',
+            'provider' => 'clientes',
+            'hash' => false,
+        ],
+        'clientes' => [
             'driver' => 'session',
             'provider' => 'clientes',
         ],
@@ -65,51 +75,33 @@ return [
             'model' => App\Models\Cliente::class,
         ],
     ],
-        // 'users' => [
-        //     'driver' => 'database',
-        //     'table' => 'clientes',
-        // ],
-    
 
     /*
     |--------------------------------------------------------------------------
     | Resetting Passwords
     |--------------------------------------------------------------------------
     |
+    | Here you may set the options for resetting passwords including the view
+    | that is your password reset e-mail. You may also set the name of the
+    | table that maintains all of the reset tokens for your application.
+    |
     | You may specify multiple password reset configurations if you have more
     | than one user table or model in the application and you want to have
     | separate password reset settings based on the specific user types.
     |
-    | The expiry time is the number of minutes that each reset token will be
+    | The expire time is the number of minutes that the reset token should be
     | considered valid. This security feature keeps tokens short-lived so
     | they have less time to be guessed. You may change this as needed.
     |
-    | The throttle setting is the number of seconds a user must wait before
-    | generating more password reset tokens. This prevents the user from
-    | quickly generating a very large amount of password reset tokens.
-    |
     */
-/* redefinir senha
+
     'passwords' => [
-        'users' => [
-            'provider' => 'users',
-            'table' => 'password_reset_tokens',
+        'clientes' => [
+            'provider' => 'clientes',
+            'table' => 'password_resets',
             'expire' => 60,
             'throttle' => 60,
         ],
     ],
-*/
-    /*
-    |--------------------------------------------------------------------------
-    | Password Confirmation Timeout
-    |--------------------------------------------------------------------------
-    |
-    | Here you may define the amount of seconds before a password confirmation
-    | times out and the user is prompted to re-enter their password via the
-    | confirmation screen. By default, the timeout lasts for three hours.
-    |
-    */
-
-    'password_timeout' => 10800,
 
 ];

@@ -19,17 +19,13 @@ class LoginController extends Controller
             'password' => 'required|string',
         ]);
 
-        // Tentar autenticar o usuário com as credenciais fornecidas
-        $credentials = [
-            'username' => $request->username,
-            'password' => $request->password,
-        ];
+        $user = Cliente::where('username', $request->username)->first();
 
-        if (Auth::attempt($credentials)) {
-            // Autenticação bem-sucedida
+
+        if ($user && Hash::check($request->password, $user->senha)) {
+            Auth::guard('clientes')->login($user);
             return redirect()->route('home');
         } else {
-            // Credenciais inválidas
             return redirect()->route('login')->withErrors(['login' => 'Credenciais inválidas. Por favor, tente novamente.']);
         }
     }
