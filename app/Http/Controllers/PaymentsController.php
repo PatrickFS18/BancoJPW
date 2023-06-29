@@ -74,20 +74,20 @@ class PaymentsController extends Controller
 
         // Verificar se o cliente possui saldo suficiente para realizar o pagamento
         if ($valorDoPagamento > $cliente->saldo) {
-        
+
             // Verificar se o cliente pode usar o limite
             if ($cliente->limite <= 0 || $cliente->limite < ($valorDoPagamento - $cliente->saldo)) {
-             
+
                 return redirect()->back()->with('error', 'Saldo insuficiente para realizar o pagamento e não é possível utilizar o limite.');
             }
 
             // Calcular o valor a ser utilizado do limite
             $limiteUtilizado = $valorDoPagamento - $cliente->saldo;
             $taxa = $limiteUtilizado * 0.01;
-            $valorTaxado=$taxa+$limiteUtilizado;
+            $valorTaxado = $taxa + $limiteUtilizado;
             // Verificar se a taxa excede o limite disponível
-            if ( $valorTaxado > (($cliente->limite)+($cliente->saldo))) {
-          
+            if ($valorTaxado > (($cliente->limite) + ($cliente->saldo))) {
+
                 return redirect()->back()->with('error', 'Saldo insuficiente para cobrir a taxa de 1% sobre o limite utilizado.');
             }
 
@@ -97,6 +97,14 @@ class PaymentsController extends Controller
             // Atualizar o limite do cliente
             $cliente->limite -= $valorTaxado;
             $cliente->save();
+
+            $transacao = new Transacao();
+            $transacao->cliente_id = $cliente->id;
+            $transacao->descricao = $metodoPagamento;
+            $transacao->tipo = $metodoPagamento;
+            $transacao->valor = $valorDoPagamento;
+            $transacao->data = now();
+            $transacao->save();
 
             return redirect()->back()->with('warning', 'Você está utilizando parte do seu limite. Foi utilizado um valor de R$ ' . $limiteUtilizado . ' do seu limite de R$ ' . $cliente->limite . ' disponível.');
         }
@@ -120,7 +128,7 @@ class PaymentsController extends Controller
         // Registrar a transação
         $transacao = new Transacao();
         $transacao->cliente_id = $cliente->id;
-        $transacao->descricao = 'Pagamento por Pix';
+        $transacao->descricao = 'Pagamento por: '.$metodoPagamento;
         $transacao->tipo = $metodoPagamento;
         $transacao->valor = $valorDoPagamento;
         $transacao->data = now();
