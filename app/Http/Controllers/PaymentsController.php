@@ -58,9 +58,41 @@ class PaymentsController extends Controller
             return redirect()->back()->withErrors(['chave_pix' => 'Chave Pix inválida. Por favor, insira um CPF, telefone ou e-mail válido.']);
         }
     }
+    public function verificarPix(request $request)
+    {
+        $request->validate([
+            'metodo' => 'required',
+            'chavePix' => 'required',
+            'valor' => 'required|numeric',
+        ]);
+        // Os dados foram validados com sucesso
+    
+        $metodoPagamento = $request->input('metodo');
+        $chavePix = $request->input('chavePix');
+        $valorDoPagamento = $request->input('valor');
+
+        $chavePixDestino = ChavePix::where('chave', $chavePix)->first();
+        $clienteDestino = Cliente::find($chavePixDestino->cliente_id);
+   
+        return redirect()->route('pagamentos', [
+            'metodoPagamento' => $metodoPagamento,
+            'chavePix' => $chavePix,
+            'valorDoPagamento' => $valorDoPagamento,
+            'chavePixDestino' => $chavePixDestino,
+            'clienteDestino' => $clienteDestino,
+        ]);
+    }
     public function pagamentoPix(request $request)
     {
 
+        $request->validate([
+            'metodo' => 'required',
+            'chavePix' => 'required',
+            'valor' => 'required|numeric',
+        ]);
+    
+        // Os dados foram validados com sucesso
+    
         $metodoPagamento = $request->input('metodo');
         $chavePix = $request->input('chavePix');
         $valorDoPagamento = $request->input('valor');
@@ -150,7 +182,7 @@ class PaymentsController extends Controller
 
         // Atualizar o saldo do cliente destino
         $clienteDestino = Cliente::find($chavePixDestino->cliente_id);
-        if ($clienteDestino == $clienteId) {
+        if ($clienteDestino && $chavePixDestino->cliente_id == $userId) {
             return redirect()->back()->with('errors', 'Você não pode efetuar um pagamento a si mesmo.');
         }
 
@@ -189,9 +221,19 @@ class PaymentsController extends Controller
 
     public function transferir(request $request)
     {
-        $metodoPagamento = "Transferência";
+        $request->validate([
+            'Transferencia' => 'required',
+            'numeroConta' => 'required',
+            'valor' => 'required|numeric',
+        ]);
+    
+        // Os dados foram validados com sucesso
+    
+        $metodoPagamento = $request->input('Transferencia');
         $numeroConta = $request->input('numeroConta');
         $valorDoPagamento = $request->input('valor');
+
+
 
         // Verificar se o número da conta foi informado
         if (!$numeroConta) {

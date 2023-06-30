@@ -31,6 +31,11 @@ Route::post('/register', [RegisterController::class, 'register'])->name('registe
 
 Route::post('/login', [LoginController::class, 'login'])->name('login');
 
+Route::post('/verificar-pix', [PaymentsController::class, 'verificarPix'])->name('verificar-pix');
+
 Route::post('/pagamento-pix', [PaymentsController::class, 'pagamentoPix'])->name('pagamento-pix');
+
+//falta implementar cancelar
+Route::post('/cancelar-pagamento', [PaymentsController::class, 'cancelarPix'])->name('cancelar-pagamento');
 
 Route::post('/transferir', [PaymentsController::class, 'transferir'])->name('transferir');

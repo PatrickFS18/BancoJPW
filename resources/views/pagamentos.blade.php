@@ -96,10 +96,8 @@ session_start();
             <div id="painelPagamentos">
                 <p>Seu saldo é: R$ @php echo $user['saldo']@endphp</p>
 
-                <form action="{{ route('pagamento-pix') }}" method="post">
+                <form action="{{ route('verificar-pix') }}" method="POST">
                     @csrf
-                    <!--Implementar session-->
-                    <input type="hidden" value="{{$user->id}}" name="id"></input>
 
                     <p>Valor:</p><input type="text" name="valor" placeholder="Valor do Pagamento">
 
@@ -120,14 +118,32 @@ session_start();
             <form action="{{route('inserir_chave')}}" method="POST">
                 @csrf
                 <label for="chave-pix">Chave Pix:</label>
-                <!--Mudar para session-->
 
                 <input type="text" name="chave_pix" id="chave-pix">
                 <button type="submit">Inserir Chave Pix</button>
             </form>
         </div>
-    </div>
+        <!-- Exibir os detalhes do cliente destinatário somente se houver chave Pix -->
+        @if (isset($chavePixDestino))
 
+        <p>Cliente destinatário: {{ $clienteDestino->nome }}</p>
+        <p>Chave Pix: {{ $chavePix }}</p>
+
+        <p>Valor do pagamento: R$ {{ $valorDoPagamento }}</p>
+
+        <!-- Formulário para confirmação do pagamento -->
+        <form method="POST" action="{{ route('pagamento-pix') }}">
+            @csrf
+            <input type="hidden" name="metodo" value="{{ $metodoPagamento }}">
+            <input type="hidden" name="chavePix" value="{{ $chavePix }}">
+            <input type="hidden" name="valor" value="{{ $valorDoPagamento }}">
+
+            <!-- Exibir um botão para confirmar o pagamento -->
+            <button type="submit">Confirmar pagamento</button>
+            <a href="{{ route('cancelar-pagamento') }}" class="btn btn-danger">Cancelar pagamento</a>
+        </form>
+        @endif
+    </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script>
     <script src="https://kit.fontawesome.com/39394938ab.js" crossorigin="anonymous"></script>
