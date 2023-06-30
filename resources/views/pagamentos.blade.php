@@ -1,3 +1,8 @@
+<?php
+
+session_start();
+
+?>
 <!DOCTYPE html>
 <html>
 
@@ -51,13 +56,11 @@
         </form>
     </div>
     <!-- Exibição de mensagens de erro -->
-    @if ($errors->any())
+    @if (session('errors'))
     <div class="alert alert-danger">
-        <ul>
-            @foreach ($errors->all() as $error)
-            <li>{{ $error }}</li>
-            @endforeach
-        </ul>
+
+        <li>{{ $errors }}</li>
+
     </div>
     @endif
     <!-- Exibição de mensagem de sucesso -->
@@ -71,6 +74,7 @@
         {{ session('warning') }}
     </div>
     @endif
+
     <div id="banco">
         <div id="sidebar">
             <div id="buttons">
@@ -118,7 +122,6 @@
                 <label for="chave-pix">Chave Pix:</label>
                 <!--Mudar para session-->
 
-                <input type="hidden" value="{{$user->id}}" name="id"></input>
                 <input type="text" name="chave_pix" id="chave-pix">
                 <button type="submit">Inserir Chave Pix</button>
             </form>

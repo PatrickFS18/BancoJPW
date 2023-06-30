@@ -49,16 +49,13 @@
 
     </div>
     <!-- Exibição de mensagens de erro -->
-    @if ($errors->any())
+    @if (session('errors'))
     <div class="alert alert-danger">
-        <ul>
-            @foreach ($errors->all() as $err)
-            <li>{{ $err }}</li>
-            @endforeach
-        </ul>
+
+        <li>{{ $errors }}</li>
+
     </div>
     @endif
-
     <!-- Exibição de mensagem de sucesso -->
     @if(session('success'))
     <div class="alert alert-success">
@@ -92,7 +89,6 @@
                     @csrf
                     <!--Mudar para session-->
 
-                    <input type="hidden" value="{{$user->id}}" name="id"></input>
                     <p>Chave:</p><input type="text" name="numeroConta" placeholder="Insira a chave da conta">
                     <p>Valor:</p><input type="text" name="valor" placeholder="Valor da Transferência">
                     <p></p>

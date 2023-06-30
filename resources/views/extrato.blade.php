@@ -25,6 +25,11 @@
     .logout-button:hover {
         background-color: #d32f2f;
     }
+
+    .larger-td {
+        width: 200px;
+        /* Defina o tamanho desejado */
+    }
 </style>
 
 <body>
@@ -60,33 +65,44 @@
                 <br>
             </div>
         </div>
-        
+
 
         <div id="extratoBancario">
             &nbsp;&nbsp; <h1 id="h1Extrato">Extrato Bancário</h1>
             <div id="painelExtrato">
-            <table class="table table-bordered" id="painelExtrato">
-    <thead>
-        <tr>
-            <th scope="col">Data</th>
-            <th scope="col">Valor</th>
-            <th scope="col">Transação</th>
-            <th scope="col">Método</th>
-        </tr>
-    </thead>
+                <table class="table table-bordered" id="painelExtrato">
+                    <thead>
+                        <tr>
+                            <th scope="col">Data</th>
+                            <th scope="col">Valor</th>
+                            <th scope="col">Transação</th>
+                            <th scope="col">Método</th>
+                        </tr>
+                    </thead>
 
-    <tbody>
-        @foreach ($transacoes as $transacao)
-      
-        <tr>
-            <td>{{ $transacao['Data'] }}</td>
-            <td id="valorExtrato">R$ {{ $transacao->Valor }}</td>
-            <td>{{ $transacao->Descricao }}</td>
-            <td>{{ $transacao->Tipo }}</td>
-        </tr>
-        @endforeach
-    </tbody>
-</table>
+                    <tbody>
+                        @foreach ($transacoes as $transacao)
+
+                        <tr>
+                            <td style="white-space: nowrap;">
+                                @php
+                                $dateTime = explode(' ', $transacao['Data']);
+                                $data = $dateTime[0];
+                                $horas = $dateTime[1];
+                                @endphp
+
+                                Data: {{ $data }}<br>
+                                Horas: {{ $horas }}
+                            </td>
+                            <td id="valorExtrato">R$ {{ $transacao->Valor }}</td>
+                            <td>{{ $transacao->Descricao }}</td>
+                            <td>{{ $transacao->Tipo }}</td>
+                            <td></td>
+
+                        </tr>
+                        @endforeach
+                    </tbody>
+                </table>
 
                 <!--Puxar da Tabela HISTORICO, pegar o TR e jogar no php para inserir conforme for utilizado.-->
             </div>

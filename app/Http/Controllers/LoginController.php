@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Cliente;
 use App\Models\acessos;
+use Illuminate\Support\Facades\Session;
 
 use Carbon\Carbon;
 
@@ -33,6 +34,11 @@ class LoginController extends Controller
             $acesso->save();
 
             Auth::guard('clientes')->login($user);
+            
+            //inserir id na sessao
+
+            Session::put('userId', $user->id);
+
             return redirect()->route('home');
         } else {
             return redirect()->route('login')->withErrors(['login' => 'Credenciais inválidas. Por favor, tente novamente.']);
@@ -49,6 +55,7 @@ class LoginController extends Controller
 
 
         Auth::guard('clientes')->logout();
+        Session::forget('userId');
         return redirect()->route('login');
     }
 }

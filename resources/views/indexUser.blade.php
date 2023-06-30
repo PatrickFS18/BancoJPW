@@ -1,3 +1,13 @@
+<?php
+
+session_start();
+
+$idUser=$_SESSION['userId'];
+?>
+
+
+
+
 <!DOCTYPE html>
 <html>
 
