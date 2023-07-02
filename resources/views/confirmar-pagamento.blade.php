@@ -10,6 +10,7 @@ $user=$_SESSION['username'];
     <title>Meu Banco</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
     <link rel="stylesheet" href="{{ asset('css/indexUser.css') }}">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
     <link rel="stylesheet" href="{{ asset('css/pagamentos.css') }}">
 </head>
 <style>
@@ -90,22 +91,33 @@ $user=$_SESSION['username'];
         </div>
 
 
-        <p>Cliente destinatário: {{ $clienteDestino->nome }}</p>
-        <p>Chave Pix: {{ $chavePix }}</p>
 
-        <p>Valor do pagamento: R$ {{ $valorDoPagamento }}</p>
 
-        <!-- Formulário para confirmação do pagamento -->
-        <form method="POST" action="{{ route('pagamento-pix') }}">
-            @csrf
-            <input type="hidden" name="metodo" value="{{ $metodoPagamento }}">
-            <input type="hidden" name="chavePix" value="{{ $chavePix }}">
-            <input type="hidden" name="valor" value="{{ $valorDoPagamento }}">
+<!-- Formulário para confirmação do pagamento -->
 
-            <!-- Exibir um botão para confirmar o pagamento -->
-            <button type="submit">Confirmar pagamento</button>
-            <a href="{{ route('cancelar-pagamento') }}" class="btn btn-danger">Cancelar pagamento</a>
-        </form>
+    <input type="hidden" name="metodo" value="{{ $metodoPagamento }}">
+    <input type="hidden" name="chavePix" value="{{ $chavePix }}">
+    <input type="hidden" name="valor" value="{{ $valorDoPagamento }}">
+
+    <!-- Exibir um botão para confirmar o pagamento -->
+
+
+    <form method="POST" action="{{ route('pagamento-pix') }}">
+    @csrf
+<div class="card" style="margin-left:25em;margin-top:10em;width: 39rem;height:23.4rem;background-color:rgba(255,201,192,0.1)">
+  <div class="card-body">
+    <h2 class="card-title" style="text-align: center;margin-top:1em" >Confirmação</h5>
+    <h4 class="card-subtitle mb-2 "style="text-align: center;margin-top:3em">Destinatário:  {{ $clienteDestino->nome }}</h6>
+    <h4 class="card-text" style="text-align: center;">Valor do pagamento: R$ {{ $valorDoPagamento }}</h5>
+    <div style="text-align: center; margin-top:2em">
+    <button type="submit" class="btn btn-success">Confirmar pagamento</button>
+    <a href="{{ route('cancelar-pagamento') }}" class="btn btn-danger">Cancelar pagamento</a>
+  </div>
+  </div>
+</div>
+</form>
+
+
 
         </body>
 
