@@ -32,15 +32,13 @@ class LoginController extends Controller
             $acesso->cliente_id = $user->id;
             $acesso->data_login = Carbon::now();
             $acesso->save();
-
             Auth::guard('clientes')->login($user);
             
             //inserir id na sessao
-
-            Session::put('userId', $user->id);
-            Session::put('username', $user->username);
-
-            return redirect()->route('home');
+            session_start();
+            $_SESSION['userId']=$user->id;
+            $_SESSION['username']=$user->nome;
+            return redirect()->route('home')->with($_SESSION,$user);
         } else {
             return redirect()->route('login')->withErrors(['login' => 'Credenciais inválidas. Por favor, tente novamente.']);
         }

@@ -1,7 +1,7 @@
 <?php
 
 session_start();
-
+$user=$_SESSION['username'];
 ?>
 <!DOCTYPE html>
 <html>
@@ -44,7 +44,7 @@ session_start();
 
 
                 $hour = date('H');
-                if ($hour >= 6 && $hour < 12) { echo 'Bom dia,' ; } elseif ($hour>= 12 && $hour < 19) { echo 'Boa tarde,' ; } else { echo 'Boa noite,' ; } @endphp <span id="spanName">!</span>
+                if ($hour >= 6 && $hour < 12) { echo 'Bom dia,' ; } elseif ($hour>= 12 && $hour < 19) { echo 'Boa tarde,' ; } else { echo 'Boa noite,' ; } @endphp <span id="spanName">{{$user}}!</span>
             </p>
         </div>
         <div id="logo-jpw">

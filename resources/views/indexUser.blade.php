@@ -1,6 +1,7 @@
 <?php
 
 session_start();
+$username = $_SESSION['username'];
 ?>
 
 
@@ -43,7 +44,7 @@ session_start();
 
 
                 $hour = date('H');
-                if ($hour >= 6 && $hour < 12) { echo 'Bom dia,' ; } elseif ($hour>= 12 && $hour < 19) { echo 'Boa tarde,' ; } else { echo 'Boa noite,' ; } @endphp <span id="spanName">{{$user->nome}}!</span>
+                if ($hour >= 6 && $hour < 12) { echo 'Bom dia,' ; } elseif ($hour>= 12 && $hour < 19) { echo 'Boa tarde,' ; } else { echo 'Boa noite,' ; } @endphp <span id="spanName">{{$username}}!</span>
             </p>
         </div>
         <div id="logo-jpw">
@@ -71,16 +72,17 @@ session_start();
                 <h1 id="titleSaldo">Saldo Disponivel:</h1>
 
                 @php
-                $limite=$user['limite'];
-                $saldo=$user->saldo;
+                $limite = $user['limite'];
+                $saldo = $user->saldo;
                 $saldoInput = "R$****"; // Defina o valor inicial do saldo
                 $toggleButtonClass = "hide-saldo"; // Defina a classe inicial do botão
 
                 if ($saldoInput === "R$****") {
-                $saldoInput = '{{$saldo}}'; // Substitua pelo valor da variável que receberá o valor do saldo
+                $saldoInput = $saldo; // Substitua pelo valor da variável que receberá o valor do saldo
                 $toggleButtonClass = "show-saldo";
                 }
                 @endphp
+
                 <button type="button" class="btn btn-link {{ $toggleButtonClass }}" id="toggleButton" onclick="toggleSaldoVisibility()"><i class="fa fa-eye" aria-hidden="true"></i></button>
                 <h3 id="saldoInput">R$****</h3>
 
@@ -88,7 +90,7 @@ session_start();
             </div>
 
             <div id="divTransacao">
-                <a class="btn btn-light" href="{{ route('pagamentos') }}"  style="margin-left: 4em;"><img src="/img/pix.png" id='pixIcon' alt="">pix</a>
+                <a class="btn btn-light" href="{{ route('pagamentos') }}" style="margin-left: 4em;"><img src="/img/pix.png" id='pixIcon' alt="">pix</a>
                 <a class="btn btn-light" href="{{ route('transferencia') }}" id="transferButton" style="margin-left: 4em;"><img src="/img/transferir.png" id='transferIcon' alt="">
                     <p id="transferButtonP">Transferir</p>
                 </a>
