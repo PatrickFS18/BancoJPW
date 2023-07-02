@@ -35,7 +35,4 @@ Route::post('/verificar-pix', [PaymentsController::class, 'verificarPix'])->name
 
 Route::post('/pagamento-pix', [PaymentsController::class, 'pagamentoPix'])->name('pagamento-pix');
 
-//falta implementar cancelar
-Route::post('/cancelar-pagamento', [PaymentsController::class, 'cancelarPix'])->name('cancelar-pagamento');
-
 Route::post('/transferir', [PaymentsController::class, 'transferir'])->name('transferir');
