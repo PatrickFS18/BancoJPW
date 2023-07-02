@@ -66,15 +66,14 @@ class PaymentsController extends Controller
             'valor' => 'required|numeric',
         ]);
         // Os dados foram validados com sucesso
-    
         $metodoPagamento = $request->input('metodo');
         $chavePix = $request->input('chavePix');
         $valorDoPagamento = $request->input('valor');
 
         $chavePixDestino = ChavePix::where('chave', $chavePix)->first();
         $clienteDestino = Cliente::find($chavePixDestino->cliente_id);
-   
-        return redirect()->route('pagamentos', [
+      
+        return view('confirmar-pagamento')->with([
             'metodoPagamento' => $metodoPagamento,
             'chavePix' => $chavePix,
             'valorDoPagamento' => $valorDoPagamento,

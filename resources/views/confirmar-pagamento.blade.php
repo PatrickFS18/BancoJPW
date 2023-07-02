@@ -44,7 +44,7 @@ session_start();
 
 
                 $hour = date('H');
-                if ($hour >= 6 && $hour < 12) { echo 'Bom dia,' ; } elseif ($hour>= 12 && $hour < 19) { echo 'Boa tarde,' ; } else { echo 'Boa noite,' ; } @endphp <span id="spanName">{{$user->nome}}!</span>
+                if ($hour >= 6 && $hour < 12) { echo 'Bom dia,' ; } elseif ($hour>= 12 && $hour < 19) { echo 'Boa tarde,' ; } else { echo 'Boa noite,' ; } @endphp <span id="spanName">!</span>
             </p>
         </div>
         <div id="logo-jpw">
@@ -90,43 +90,24 @@ session_start();
         </div>
 
 
-        <div id="pagamentos">
+        <p>Cliente destinatário: {{ $clienteDestino->nome }}</p>
+        <p>Chave Pix: {{ $chavePix }}</p>
 
-            <h1 id="h1Pagamento">Pagamentos</h1>
-            <div id="painelPagamentos">
-                <p>Seu saldo é: R$ @php echo $user['saldo']@endphp</p>
+        <p>Valor do pagamento: R$ {{ $valorDoPagamento }}</p>
 
-                <form action="{{ route('verificar-pix') }}" method="POST">
-                    @csrf
+        <!-- Formulário para confirmação do pagamento -->
+        <form method="POST" action="{{ route('pagamento-pix') }}">
+            @csrf
+            <input type="hidden" name="metodo" value="{{ $metodoPagamento }}">
+            <input type="hidden" name="chavePix" value="{{ $chavePix }}">
+            <input type="hidden" name="valor" value="{{ $valorDoPagamento }}">
 
-                    <p>Valor:</p><input type="text" name="valor" placeholder="Valor do Pagamento">
+            <!-- Exibir um botão para confirmar o pagamento -->
+            <button type="submit">Confirmar pagamento</button>
+            <a href="{{ route('cancelar-pagamento') }}" class="btn btn-danger">Cancelar pagamento</a>
+        </form>
 
-                    <p>Metodo de Pagamento:</p>
-                    <select name="metodo">
-                        <option value="pix">Pix</option>
-                        <option value="boleto">Boleto</option>
-                        <option value="Débito">Débito</option>
-                    </select>
-                    <input type="text" name="chavePix" placeholder="Chave PIX" style="display: block;" id="chavePixInput">
-                    </div>
-                    <button type="submit" class="btn btn-success" id="payButton">Pagar</button>
-                    </div>
-                </form>
-
-
-        <div id="Pix">
-            <form action="{{route('inserir_chave')}}" method="POST">
-                @csrf
-                <label for="chave-pix">Chave Pix:</label>
-
-                <input type="text" name="chave_pix" id="chave-pix">
-                <button type="submit">Inserir Chave Pix</button>
-            </form>
-        </div>
-        
-       
- 
-    </div>
+        </body>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script>
     <script src="https://kit.fontawesome.com/39394938ab.js" crossorigin="anonymous"></script>
@@ -148,6 +129,5 @@ session_start();
             document.querySelector('.alert').classList.add('hide');
         }, 4000);
     </script>
-</body>
 
 </html>

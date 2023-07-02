@@ -22,8 +22,8 @@ class LoginController extends Controller
             'username' => 'required|string',
             'password' => 'required|string',
         ]);
-
         $user = Cliente::where('username', $request->username)->first();
+
 
 
         if ($user && Hash::check($request->password, $user->senha)) {
@@ -38,6 +38,7 @@ class LoginController extends Controller
             //inserir id na sessao
 
             Session::put('userId', $user->id);
+            Session::put('username', $user->username);
 
             return redirect()->route('home');
         } else {
