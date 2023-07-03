@@ -18,6 +18,7 @@ class Transacao extends Model
         'Tipo',
         'Valor',
         'Data',
+        'Destinatário',
     ];
 
     public function cliente()

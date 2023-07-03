@@ -123,20 +123,23 @@ class PaymentsController extends Controller
         }
 
         // Verificar se o cliente possui saldo suficiente para realizar o pagamento
+        
         if ($valorDoPagamento > $cliente->saldo) {
 
             // Verificar se o cliente pode usar o limite
 
-
+            $valorapagar=$valorDoPagamento;
             // Calcular o valor a ser utilizado do limite
-            $limiteUtilizado = $valorDoPagamento - $cliente->saldo;
+            $limiteUtilizado = $valorapagar - $cliente->saldo;
             $taxa = $limiteUtilizado * 0.01;
             $valorTaxado = $taxa + $limiteUtilizado;
             // Verificar se a taxa excede o limite disponível
+
             if ($valorTaxado > (($cliente->limite) + ($cliente->saldo))) {
 
                 return redirect('pagamentos')->with('errors', 'Saldo insuficiente para cobrir a taxa de 1% sobre o limite utilizado.');
             }
+
             $chavePixDestino = ChavePix::where('chave', $chavePix)->first();
 
             if (!$chavePixDestino) {
@@ -155,6 +158,7 @@ class PaymentsController extends Controller
             $cliente->limite -= $valorTaxado;
             $cliente->save();
             $date = Carbon::now();
+
             if ($clienteDestino->limite < 1000) {
                 // Calcular o valor que pode ser adicionado ao limite
                 $valorLimite = min(1000 - $clienteDestino->limite, $valorDoPagamento);
@@ -168,14 +172,15 @@ class PaymentsController extends Controller
                 // Atualizar o saldo do cliente recebedor com o valor do pagamento
                 $clienteDestino->saldo += $valorDoPagamento;
             }
-            $clienteDestino->save();
 
+            $clienteDestino->save();
             $transacao = new Transacao();
             $transacao->cliente_id = $cliente->id;
             $transacao->descricao = $metodoPagamento;
             $transacao->tipo = $metodoPagamento;
             $transacao->valor = $valorDoPagamento;
             $transacao->data = $date->format('Y-m-d H:i:s');
+            $transacao->Destinatário=$clienteDestino->nome;
             $transacao->save();
 
             return redirect('pagamentos')->with('warning', 'Pagamento efetuado, mas se liga! Você está utilizando parte do seu limite. Foi utilizado um valor de R$ ' . $limiteUtilizado . ' do seu limite de R$ ' . $cliente->limite . ' disponível.');
@@ -208,7 +213,6 @@ class PaymentsController extends Controller
             $clienteDestino->saldo += $valorDoPagamento;
         }
         $clienteDestino->save();
-
         // Atualizar o saldo do cliente pagador
         $cliente->saldo -= $valorDoPagamento;
         $cliente->save();
@@ -220,6 +224,8 @@ class PaymentsController extends Controller
         $transacao->tipo = $metodoPagamento;
         $transacao->valor = $valorDoPagamento;
         $transacao->data = $date->format('Y-m-d H:i:s');
+        $transacao->Destinatário=$clienteDestino->nome;
+
         $transacao->save();
 
         return redirect('pagamentos')->with('success', 'Pagamento realizado com sucesso!');
@@ -241,13 +247,12 @@ class PaymentsController extends Controller
         $numeroConta = $request->input('numeroConta');
         $valorDoPagamento = $request->input('valor');
         $clienteId = $request->input('userId');
-
         $cliente = Cliente::find($clienteId);
 
 
         // Verificar se o número da conta foi informado
         if (!$numeroConta) {
-            return redirect('pagamentos')->with('errors', 'Número da conta não informado.');
+            return redirect('transferencia')->with('errors', 'Número da conta não informado.');
         }
 
         // Buscar o cliente pelo número da conta
@@ -258,12 +263,12 @@ class PaymentsController extends Controller
 
         // Verificar se o cliente existe
         if (!$clienteFinal) {
-            return redirect('pagamentos')->with('errors', 'Número de conta não encontrado/inválido.');
+            return redirect('transferencia')->with('errors', 'Número de conta não encontrado/inválido.');
         }
 
         // Verificar se o valor do pagamento é válido
         if ($valorDoPagamento <= 0) {
-            return redirect('pagamentos')->with('errors', 'Valor do pagamento inválido.');
+            return redirect('transferencia')->with('errors', 'Valor do pagamento inválido.');
         }
 
         // Verificar se o cliente possui saldo suficiente para realizar o pagamento
@@ -274,7 +279,7 @@ class PaymentsController extends Controller
             if ($cliente->limite <= 0 || $cliente->limite < ($valorDoPagamento - $cliente->saldo)) {
                 $errorMessage = 'Saldo e limite insuficiente para realizar o pagamento.';
 
-                return redirect('pagamentos')->with('errors', $errorMessage);
+                return redirect('transferencia')->with('errors', $errorMessage);
             }
 
             // Calcular o valor a ser utilizado do limite
@@ -284,7 +289,7 @@ class PaymentsController extends Controller
 
             // Verificar se a taxa excede o limite disponível
             if ($valorTaxado > ($cliente->limite + $cliente->saldo)) {
-                return redirect('pagamentos')->with('errors', 'Saldo insuficiente para cobrir a taxa de 1% sobre o limite utilizado.');
+                return redirect('transferencia')->with('errors', 'Saldo insuficiente para cobrir a taxa de 1% sobre o limite utilizado.');
             }
 
             // Atualizar o saldo do cliente
@@ -301,13 +306,15 @@ class PaymentsController extends Controller
             $transacao->tipo = $metodoPagamento;
             $transacao->valor = $valorDoPagamento;
             $transacao->data = $date->format('Y-m-d H:i:s');
+            $transacao->Destinatário=$clienteFinal->nome;
+
             $transacao->save();
-            return redirect('pagamentos')->with('warning', 'Você está utilizando parte do seu limite. Foi utilizado um valor de R$ ' . $limiteUtilizado . ' do seu limite de R$ ' . $cliente->limite . ' disponível.');
+            return redirect('transferencia')->with('warning', 'Você está utilizando parte do seu limite. Foi utilizado um valor de R$ ' . $limiteUtilizado . ' do seu limite de R$ ' . $cliente->limite . ' disponível.');
         }
 
         // Verificar se o cliente possui uma conta bancária registrada para transferência
         if (!$cliente->numero_Conta) {
-            return redirect('pagamentos')->with('errors', 'Não foi possível encontrar uma conta bancária registrada.');
+            return redirect('transferencia')->with('errors', 'Não foi possível encontrar uma conta bancária registrada.');
         }
 
 
@@ -340,8 +347,10 @@ class PaymentsController extends Controller
         $transacao->tipo = $metodoPagamento;
         $transacao->valor = $valorDoPagamento;
         $transacao->data = $date->format('Y-m-d H:i:s');
+        $transacao->Destinatário=$clienteFinal->nome;
+
         $transacao->save();
 
-        return redirect('pagamentos')->with('success', 'Pagamento realizado com sucesso!');
+        return redirect('transferencia')->with('success', 'Pagamento realizado com sucesso!');
     }
 }

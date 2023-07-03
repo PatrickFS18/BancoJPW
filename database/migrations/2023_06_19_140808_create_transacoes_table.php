@@ -21,6 +21,8 @@ class CreateTransacoesTable extends Migration
             $table->string('Tipo')->nullable();
             $table->decimal('Valor', 10, 2)->nullable();
             $table->date('Data')->nullable();
+            $table->string('Destinatário')->nullable();
+
         });
     }
 

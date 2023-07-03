@@ -77,6 +77,8 @@
                             <th scope="col">Valor</th>
                             <th scope="col">Transação</th>
                             <th scope="col">Método</th>
+                            <th scope="col">Destinatário</th>
+
                         </tr>
                     </thead>
 
@@ -97,7 +99,7 @@
                             <td id="valorExtrato">R$ {{ $transacao->Valor }}</td>
                             <td>{{ $transacao->Descricao }}</td>
                             <td>{{ $transacao->Tipo }}</td>
-                            <td></td>
+                            <td>{{ $transacao->Destinatário }}</td>
 
                         </tr>
                         @endforeach
