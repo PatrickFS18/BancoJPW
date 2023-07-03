@@ -115,7 +115,7 @@
                 </form>
 
 
-        <div id="saldoUsuario">
+        <div id="pixInput">
             <form action="{{route('inserir_chave')}}" method="POST">
                 @csrf
                 <label for="chave-pix">Chave Pix:</label>
