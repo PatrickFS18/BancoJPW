@@ -29,7 +29,7 @@ class UserDashboardController extends Controller
         $user = Auth::guard('clientes')->user();
 
         // Obter o ID do cliente logado
-        $clienteId = Session::get('userId');
+        $clienteId = $user->id;
 
         // Buscar as transações do cliente pelo ID
         $transacoes = Transacao::where('cliente_id', $clienteId)->orderBy('data', 'desc')->get();
