@@ -1,7 +1,6 @@
 <?php
 
-session_start();
-$username=$_SESSION['username'];
+
 ?>
 <!DOCTYPE html>
 <html>
@@ -44,7 +43,7 @@ $username=$_SESSION['username'];
 
 
                 $hour = date('H');
-                if ($hour >= 6 && $hour < 12) { echo 'Bom dia,' ; } elseif ($hour>= 12 && $hour < 19) { echo 'Boa tarde,' ; } else { echo 'Boa noite,' ; } @endphp <span id="spanName">{{$username}}!</span>
+                if ($hour >= 6 && $hour < 12) { echo 'Bom dia,' ; } elseif ($hour>= 12 && $hour < 19) { echo 'Boa tarde,' ; } else { echo 'Boa noite,' ; } @endphp <span id="spanName">{{$user['nome']}}!</span>
             </p>
         </div>
         <div id="logo-jpw">
@@ -94,19 +93,21 @@ $username=$_SESSION['username'];
 
             <h1 id="h1Pagamento">Pagamentos</h1>
             <div id="painelPagamentos">
-                <p>Seu saldo é: R$ @php echo $user['saldo']@endphp</p>
+                <p id="painelP">Seu saldo é: R$ @php echo $user['saldo']@endphp</p>
 
                 <form action="{{ route('verificar-pix') }}" method="POST">
                     @csrf
 
-                    <p>Valor:</p><input type="text" name="valor" placeholder="Valor do Pagamento">
+                    <p id="painelP">Valor:</p><input type="text" name="valor" placeholder="Valor do Pagamento">
 
-                    <p>Metodo de Pagamento:</p>
+                    <p id="painelP">Metodo de Pagamento:</p>
                     <select name="metodo">
                         <option value="pix">Pix</option>
                         <option value="boleto">Boleto</option>
                         <option value="Débito">Débito</option>
                     </select>
+                 <input type="hidden" name="user" value="{{$user}}">
+                    <input type="hidden" name="clienteDestino" value="">
                     <input type="text" name="chavePix" placeholder="Chave PIX" style="display: block;" id="chavePixInput">
                     </div>
                     <button type="submit" class="btn btn-success" id="payButton">Pagar</button>
@@ -114,10 +115,11 @@ $username=$_SESSION['username'];
                 </form>
 
 
-        <div id="Pix">
+        <div id="saldoUsuario">
             <form action="{{route('inserir_chave')}}" method="POST">
                 @csrf
                 <label for="chave-pix">Chave Pix:</label>
+                    <input type="hidden" name="userId" value="{{$user['id']}}">
 
                 <input type="text" name="chave_pix" id="chave-pix">
                 <button type="submit">Inserir Chave Pix</button>

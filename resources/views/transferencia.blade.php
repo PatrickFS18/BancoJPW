@@ -84,14 +84,13 @@
         <div id="transferencias">
             <h1 id="h1Transferencia">Transferencia</h1>
             <div id="painelTransferencia">
-                <p>Seu saldo é: R$ @php echo $user['saldo']@endphp</p>
+                <p id="painelP">Seu saldo é: R$ @php echo $user['saldo']@endphp</p>
                 <form method="post" action="{{ route('transferir') }}">
                     @csrf
                     <!--Mudar para session-->
     
-                    <p>Chave:</p><input type="text" name="numeroConta" placeholder="Insira a chave da conta">
-                    <p>Valor:</p><input type="text" name="valor" placeholder="Valor da Transferência">
-                    <p></p>
+                    <p id="painelP">Conta:</p><input type="text" name="numeroConta" placeholder="Insira o número da conta">
+                    <p id="painelP">Valor:</p><input type="text" name="valor" placeholder="Valor da Transferência">
             </div>
             <button type="submit" class="btn btn-success" id="payButton">Transferir</button>
             </form>

@@ -41,7 +41,7 @@
             flex-grow: 1;
             /* Faz o logotipo ocupar todo o espaço disponível */
             display: flex;
-            margin-left: 38%;
+            margin-left: 32%;
             margin-top: 10px;
             /* Alinhar o logotipo ao extremo direito */
         }
@@ -77,10 +77,11 @@
         
         #h1Extrato {
             font-family: 'Times New Roman', Times, serif;
+            margin-left:420px;
         }
         
         #painelExtrato {
-            margin-left: 115%;
+            margin-left: 23%;
             font-size: 120%;
         }
         
@@ -97,6 +98,8 @@
         
         #painelExtrato tbody tr {
             height: 2em;
+            border: 2px solid black; /* Aumente a largura da borda para torná-la mais grossa */
+            color: black
             /* Altura das linhas */
         }
         

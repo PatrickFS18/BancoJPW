@@ -8,7 +8,6 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\Transacao;
 use App\Models\Cliente;
 use Carbon\Carbon;
-use Illuminate\Support\Facades\Session;
 use Illuminate\Support\MessageBag;
 
 
@@ -20,9 +19,10 @@ class PaymentsController extends Controller
     {
         $request->validate([
             'chave_pix' => 'required|string',
-        ]);
-        $userId = Session::get('userId');
+            'userId' => 'required',
 
+        ]);
+        $userId= $request->userId;
         $chavePix = $request->chave_pix;
 
         // Verifique se a chave Pix é um CPF, telefone ou e-mail
@@ -61,63 +61,72 @@ class PaymentsController extends Controller
     public function verificarPix(request $request)
     {
         $request->validate([
+            'user' => 'required',
             'metodo' => 'required',
             'chavePix' => 'required',
             'valor' => 'required|numeric',
         ]);
         // Os dados foram validados com sucesso
+        $user = $request->input('user');
+
         $metodoPagamento = $request->input('metodo');
         $chavePix = $request->input('chavePix');
         $valorDoPagamento = $request->input('valor');
-
         $chavePixDestino = ChavePix::where('chave', $chavePix)->first();
-        $clienteDestino = Cliente::find($chavePixDestino->cliente_id);
-      
-        return view('confirmar-pagamento')->with([
-            'metodoPagamento' => $metodoPagamento,
-            'chavePix' => $chavePix,
-            'valorDoPagamento' => $valorDoPagamento,
-            'chavePixDestino' => $chavePixDestino,
-            'clienteDestino' => $clienteDestino,
-        ]);
+
+        if ($chavePixDestino) {
+            $clienteDestino = Cliente::find($chavePixDestino->cliente_id);
+            return view('confirmar-pagamento')->with([
+                'user'=>$user,
+                'metodoPagamento' => $metodoPagamento,
+                'chavePix' => $chavePix,
+                'valorDoPagamento' => $valorDoPagamento,
+                'chavePixDestino' => $chavePixDestino,
+                'clienteDestino' => $clienteDestino,
+            ]);
+        }else{
+            return back()->with('errors', 'Chave pix não encontrada.');
+        }
     }
     public function pagamentoPix(request $request)
     {
 
         $request->validate([
+            'userId' => 'required',
             'metodo' => 'required',
             'chavePix' => 'required',
             'valor' => 'required|numeric',
         ]);
-    
         // Os dados foram validados com sucesso
-    
+        $userId = $request->input('userId');
+        $userId=intval($userId);
         $metodoPagamento = $request->input('metodo');
         $chavePix = $request->input('chavePix');
         $valorDoPagamento = $request->input('valor');
 
         // Obter o cliente logado
-        $userId = Session::get('userId');
         $cliente = Cliente::find($userId);
         // Verificar se o cliente existe
+        if ($cliente->limite <= 0 || $cliente->limite < ($valorDoPagamento - $cliente->saldo)) {
+
+            return redirect('pagamentos')->with('errors', 'Saldo insuficiente para realizar o pagamento e não é possível utilizar o limite.');
+        }
         if (!$cliente) {
 
-            return redirect()->back()->with('errors', 'Cliente não encontrado.');
+
+            return redirect('pagamentos')->with('errors', 'Cliente não encontrado.');
         }
 
         // Verificar se o valor do pagamento é válido
         if ($valorDoPagamento <= 0) {
-            return redirect()->back()->with('errors', 'Valor do pagamento inválido.');
+            return redirect('pagamentos')->with('errors', 'Valor do pagamento inválido.');
         }
 
         // Verificar se o cliente possui saldo suficiente para realizar o pagamento
         if ($valorDoPagamento > $cliente->saldo) {
 
             // Verificar se o cliente pode usar o limite
-            if ($cliente->limite <= 0 || $cliente->limite < ($valorDoPagamento - $cliente->saldo)) {
-
-                return redirect()->back()->with('errors', 'Saldo insuficiente para realizar o pagamento e não é possível utilizar o limite.');
-            }
+          
 
             // Calcular o valor a ser utilizado do limite
             $limiteUtilizado = $valorDoPagamento - $cliente->saldo;
@@ -126,18 +135,18 @@ class PaymentsController extends Controller
             // Verificar se a taxa excede o limite disponível
             if ($valorTaxado > (($cliente->limite) + ($cliente->saldo))) {
 
-                return redirect()->back()->with('errors', 'Saldo insuficiente para cobrir a taxa de 1% sobre o limite utilizado.');
+                return redirect('pagamentos')->with('errors', 'Saldo insuficiente para cobrir a taxa de 1% sobre o limite utilizado.');
             }
             $chavePixDestino = ChavePix::where('chave', $chavePix)->first();
 
             if (!$chavePixDestino) {
-                return redirect()->back()->with('errors', 'Não foi possível encontrar um destinatário com a chave Pix informada.');
+                return redirect('pagamentos')->with('errors', 'Não foi possível encontrar um destinatário com a chave Pix informada.');
             }
 
             // Atualizar o saldo do cliente destino
             $clienteDestino = Cliente::find($chavePixDestino->cliente_id);
             if ($clienteDestino && $chavePixDestino->cliente_id == $userId) {
-                return redirect()->back()->with('errors', 'Você não pode efetuar um pagamento a si mesmo.');
+                return redirect('pagamentos')->with('errors', 'Você não pode efetuar um pagamento a si mesmo.');
             }
             // Atualizar o saldo do cliente
             $cliente->saldo = 0;
@@ -169,20 +178,20 @@ class PaymentsController extends Controller
             $transacao->data = $date->format('Y-m-d H:i:s');
             $transacao->save();
 
-            return redirect()->back()->with('warning', 'Pagamento efetuado, mas se liga! Você está utilizando parte do seu limite. Foi utilizado um valor de R$ ' . $limiteUtilizado . ' do seu limite de R$ ' . $cliente->limite . ' disponível.');
+            return redirect('pagamentos')->with('warning', 'Pagamento efetuado, mas se liga! Você está utilizando parte do seu limite. Foi utilizado um valor de R$ ' . $limiteUtilizado . ' do seu limite de R$ ' . $cliente->limite . ' disponível.');
         }
 
         // Verificar se o cliente possui uma chave Pix registrada para receber o pagamento
         $chavePixDestino = ChavePix::where('chave', $chavePix)->first();
 
         if (!$chavePixDestino) {
-            return redirect()->back()->with('errors', 'Não foi possível encontrar um destinatário com a chave Pix informada.');
+            return redirect('pagamentos')->with('errors', 'Não foi possível encontrar um destinatário com a chave Pix informada.');
         }
 
         // Atualizar o saldo do cliente destino
         $clienteDestino = Cliente::find($chavePixDestino->cliente_id);
         if ($clienteDestino && $chavePixDestino->cliente_id == $userId) {
-            return redirect()->back()->with('errors', 'Você não pode efetuar um pagamento a si mesmo.');
+            return redirect('pagamentos')->with('errors', 'Você não pode efetuar um pagamento a si mesmo.');
         }
 
         if ($clienteDestino->limite < 1000) {
@@ -223,11 +232,12 @@ class PaymentsController extends Controller
         $request->validate([
             'Transferencia' => 'required',
             'numeroConta' => 'required',
+            'userId' => 'required',
             'valor' => 'required|numeric',
         ]);
-    
+
         // Os dados foram validados com sucesso
-    
+
         $metodoPagamento = $request->input('Transferencia');
         $numeroConta = $request->input('numeroConta');
         $valorDoPagamento = $request->input('valor');
@@ -244,7 +254,7 @@ class PaymentsController extends Controller
 
 
         // Obter o cliente logado
-        $clienteId = Session::get('userId');
+        $clienteId = $request->input('userId');
 
         $cliente = Cliente::find($clienteId);
         // Verificar se o cliente existe

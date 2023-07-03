@@ -1,8 +1,4 @@
-<?php
 
-session_start();
-$user = $_SESSION['username'];
-?>
 <!DOCTYPE html>
 <html>
 
@@ -40,12 +36,12 @@ $user = $_SESSION['username'];
     <div class="header">
         <div id="welcomeUser">
             <p style="font-family: 'Times New Roman', Times, serif; font-size: larger">
+            
                 @php
                 date_default_timezone_set('America/Sao_Paulo'); // Defina o fuso horário desejado
-
-
+            $usernome=json_decode($user, true);    
                 $hour = date('H');
-                if ($hour >= 6 && $hour < 12) { echo 'Bom dia,' ; } elseif ($hour>= 12 && $hour < 19) { echo 'Boa tarde,' ; } else { echo 'Boa noite,' ; } @endphp <span id="spanName">{{$user}}!</span>
+                if ($hour >= 6 && $hour < 12) { echo 'Bom dia,' ; } elseif ($hour>= 12 && $hour < 19) { echo 'Boa tarde,' ; } else { echo 'Boa noite,' ; } @endphp <span id="spanName">{{$usernome['nome']}}!</span>
             </p>
         </div>
         <div id="logo-jpw">
@@ -102,14 +98,15 @@ $user = $_SESSION['username'];
 
         <form method="POST" action="{{ route('pagamento-pix') }}">
             @csrf
-            
+                        <input type="hidden" name="userId" value="{{ $usernome['id'] }}">
+
             <input type="hidden" name="metodo" value="{{ $metodoPagamento }}">
             <input type="hidden" name="chavePix" value="{{ $chavePix }}">
             <input type="hidden" name="valor" value="{{ $valorDoPagamento }}">
             <div class="card" style="margin-left: 25em; margin-top: 10em; width: 39rem; height: 23.4rem; background-color: rgba(255,201,192,0.1)">
                 <div class="card-body">
                     <h2 class="card-title" style="text-align: center; margin-top: 1em">Confirmação</h2>
-                    <h4 class="card-subtitle mb-2" style="text-align: center; margin-top: 3em">Destinatário: {{ $clienteDestino->nome }}</h4>
+                    <h4 class="card-subtitle mb-2" style="text-align: center; margin-top: 3em">Destinatário: {{ $clienteDestino['nome'] }}</h4>
                     <h4 class="card-text" style="text-align: center;">Valor do pagamento: R$ {{ $valorDoPagamento }}</h4>
                     <div style="text-align: center; margin-top: 2em">
                         <button type="submit" class="btn btn-success">Confirmar pagamento</button>

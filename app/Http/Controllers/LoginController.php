@@ -25,7 +25,6 @@ class LoginController extends Controller
         $user = Cliente::where('username', $request->username)->first();
 
 
-
         if ($user && Hash::check($request->password, $user->senha)) {
             //registro de acesso (login)
             $acesso = new acessos();
@@ -35,10 +34,7 @@ class LoginController extends Controller
             Auth::guard('clientes')->login($user);
             
             //inserir id na sessao
-            session_start();
-            $_SESSION['userId']=$user->id;
-            $_SESSION['username']=$user->nome;
-            return redirect()->route('home')->with($_SESSION,$user);
+            return redirect()->route('home')->with(['user'=>$user]);
         } else {
             return redirect()->route('login')->withErrors(['login' => 'Credenciais inválidas. Por favor, tente novamente.']);
         }
