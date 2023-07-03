@@ -72,6 +72,7 @@ class PaymentsController extends Controller
         $metodoPagamento = $request->input('metodo');
         $chavePix = $request->input('chavePix');
         $valorDoPagamento = $request->input('valor');
+        $valorPago=$valorDoPagamento;
         $chavePixDestino = ChavePix::where('chave', $chavePix)->first();
 
         if ($chavePixDestino) {
@@ -103,7 +104,7 @@ class PaymentsController extends Controller
         $metodoPagamento = $request->input('metodo');
         $chavePix = $request->input('chavePix');
         $valorDoPagamento = $request->input('valor');
-
+        $valorPago=$valorDoPagamento;
         // Obter o cliente logado
         $cliente = Cliente::find($userId);
         // Verificar se o cliente existe
@@ -178,7 +179,7 @@ class PaymentsController extends Controller
             $transacao->cliente_id = $cliente->id;
             $transacao->descricao = $metodoPagamento;
             $transacao->tipo = $metodoPagamento;
-            $transacao->valor = $valorDoPagamento;
+            $transacao->valor = $valorPago;
             $transacao->data = $date->format('Y-m-d H:i:s');
             $transacao->Destinatário=$clienteDestino->nome;
             $transacao->save();
@@ -222,7 +223,7 @@ class PaymentsController extends Controller
         $transacao->cliente_id = $cliente->id;
         $transacao->descricao = $metodoPagamento;
         $transacao->tipo = $metodoPagamento;
-        $transacao->valor = $valorDoPagamento;
+        $transacao->valor = $valorPago;
         $transacao->data = $date->format('Y-m-d H:i:s');
         $transacao->Destinatário=$clienteDestino->nome;
 
@@ -246,6 +247,7 @@ class PaymentsController extends Controller
         $metodoPagamento = 'Transferência';
         $numeroConta = $request->input('numeroConta');
         $valorDoPagamento = $request->input('valor');
+        $valorPago=$valorDoPagamento;
         $clienteId = $request->input('userId');
         $cliente = Cliente::find($clienteId);
 
@@ -304,7 +306,7 @@ class PaymentsController extends Controller
             $transacao->cliente_id = $cliente->id;
             $transacao->descricao = $metodoPagamento;
             $transacao->tipo = $metodoPagamento;
-            $transacao->valor = $valorDoPagamento;
+            $transacao->valor = $valorPago;
             $transacao->data = $date->format('Y-m-d H:i:s');
             $transacao->Destinatário=$clienteFinal->nome;
 
@@ -345,7 +347,7 @@ class PaymentsController extends Controller
         $transacao->cliente_id = $cliente->id;
         $transacao->descricao = 'Pagamento por: ' . $metodoPagamento;
         $transacao->tipo = $metodoPagamento;
-        $transacao->valor = $valorDoPagamento;
+        $transacao->valor = $valorPago;
         $transacao->data = $date->format('Y-m-d H:i:s');
         $transacao->Destinatário=$clienteFinal->nome;
 
