@@ -88,7 +88,7 @@
                 <form method="post" action="{{ route('transferir') }}">
                     @csrf
                     <!--Mudar para session-->
-    
+                    <input type="hidden" name="userId" value="{{$user->id}}">
                     <p id="painelP">Conta:</p><input type="text" name="numeroConta" placeholder="Insira o número da conta">
                     <p id="painelP">Valor:</p><input type="text" name="valor" placeholder="Valor da Transferência">
             </div>
